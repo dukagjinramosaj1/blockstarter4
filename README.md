@@ -2,10 +2,11 @@
 ![blockstarter-logo](blockstarter-logo-small.png "Blockstarter 4")  
 Kickstarter-inspired platform which stores progress and fundings on Blockchain
 
-Created as project in the course **Advanced Enterprise Computing SS2017** 
+Created as project in the course **Advanced Enterprise Computing SS2017** at TU Berlin
 
 ## Functionality
-`TODO decide for functionality on first meeting 20.06.`
+|`TODO decide for functionality on first meeting 20.06.`
+|-----
 
 ## Development
 ### Project Structure
@@ -14,6 +15,7 @@ Created as project in the course **Advanced Enterprise Computing SS2017**
 * Truffle (?)
 * Backend (Express? Koa?)
 * Frontend (? React? Vue?)
+* Report (LaTeX?)
 
 ### Get Started
 |`TODO`
@@ -21,12 +23,14 @@ Created as project in the course **Advanced Enterprise Computing SS2017**
 ## Organisation
 
 ### Team
-We are group D, formed by the following team members:
+This project is implemented by **group D**, formed by the following team members:
 
-* Thomas Wirth - github: `wtho` <t.wirth@campus.tu-berlin.de>
+| Name | github | mail
+|------|--------|----
+|Thomas Wirth|wtho|<t.wirth@campus.tu-berlin.de>
 
-  |`TODO please add all your names`
-  |----
+|`TODO please add all your names`
+|----
 
 ### Milestones
 1. First Update Meeting 23.06.
@@ -41,5 +45,5 @@ Additional dates:
 * Source Code and Documentation [8]
 * ~ 15 Pages PDF Report [8]
 * Participation in Update Meetings and Presentation [4]  
-*As the supervisors mentioned in the kick-off everyone should show their role in the group and participate in discussions during the update meetings. As the 10-minute presentation cannot be held by everyone in the team, members who were not as active before can score by presenting.*
+*As the supervisors mentioned in the kick-off everyone should be an active part of the group and participate in discussions during the update meetings. These meetings are mandatory. As the 10-minute presentation cannot be held by everyone in the team, members who were not as active before can score by presenting. The supervisors would give us hints, who could hold the presentation.*
 
