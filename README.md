@@ -23,7 +23,7 @@ Created as project in the course **Advanced Enterprise Computing SS2017**
 ### Team
 We are group D, formed by the following team members:
 
-* Thomas Wirth - wtho <t.wirth@campus.tu-berlin.de>
+* Thomas Wirth - github: `wtho` <t.wirth@campus.tu-berlin.de>
 
   |`TODO please add all your names`
   |----
@@ -40,6 +40,6 @@ Additional dates:
 ### Grading
 * Source Code and Documentation [8]
 * ~ 15 Pages PDF Report [8]
-* Participation in Update Meetings and Presentation  
+* Participation in Update Meetings and Presentation [4]  
 *As the supervisors mentioned in the kick-off everyone should show their role in the group and participate in discussions during the update meetings. As the 10-minute presentation cannot be held by everyone in the team, members who were not as active before can score by presenting.*
 
