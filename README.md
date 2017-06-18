@@ -28,6 +28,7 @@ This project is implemented by **group D**, formed by the following team members
 | Name | github | mail
 |------|--------|----
 |Thomas Wirth|wtho|<t.wirth@campus.tu-berlin.de>
+|Dukagjin Ramosaj|<dukagjinramosaj1|dukagjin.ramosaj@campus.tu-berlin.de>
 
 |`TODO please add all your names`
 |----
