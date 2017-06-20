@@ -37,6 +37,7 @@ This project is implemented by **group D**, which consists of the following team
 |Niklas Zbozinek | Zbozi | <niklas.zbozinek@campus.tu-berlin.de>
 |Raviprasad M R | raviprasadmr | <r.marikeramesha@campus.tu-berlin.de>
 |Ankita Shah Ashwin| ankita-1301 | <ankita.s.ashwin@campus.tu-berlin.de>
+|Darshan Hingu| darshan0071990 | <hingudarshan@win.tu-berlin.de>
 
 |`TODO please add all your names`
 |----
