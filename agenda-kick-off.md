@@ -23,3 +23,4 @@
 1. Gather questions for supervisors:
     1. GitHub access - account names
     1. Is Token just funding amount?
+    1. Documentation - how granular?
