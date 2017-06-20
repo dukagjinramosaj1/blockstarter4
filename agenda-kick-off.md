@@ -22,3 +22,4 @@
 1. Schedule next meeting
 1. Gather questions for supervisors:
     1. GitHub access - account names
+    1. Is Token just funding amount?
