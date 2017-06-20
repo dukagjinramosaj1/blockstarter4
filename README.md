@@ -31,6 +31,7 @@ This project is implemented by **group D**, which consists of the following team
 
 | Name | github | mail
 |------|--------|----
+|Nikhil Singh|nikkytub|<nikhil.singh@campus.tu-berlin.de>
 |Thomas Wirth|wtho|<t.wirth@campus.tu-berlin.de>
 |Dukagjin Ramosaj|dukagjinramosaj1|<dukagjin.ramosaj@campus.tu-berlin.de>
 |Zeba Bushra Khalil|zebakhalil|<z.khalil@campus.tu-berlin.de>
