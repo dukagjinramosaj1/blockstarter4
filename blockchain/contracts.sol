@@ -12,23 +12,12 @@ contract Blockstarter {
         projects.push(newProject);
     }
     
-    function getProjectCount() returns (uint _length) {
+    function getProjectCount() constant returns (uint _length) {
         _length = projects.length;
     }
     
-    function getProjectAddressAt(uint index) returns (address project) {
+        function getProjectAddressAt(uint index) constant returns (address project) {
         project = projects[index];
-    }
-    
-    function getProjectAt(uint index) 
-        returns (string, string, string, uint, uint, bool) {
-        address project = getProjectAddressAt(index);
-        return getProject(project);
-    }
-    
-    function getProject(address project)
-        returns (string, string, string, uint, uint, bool) {
-        return Project(project).funding_status();
     }
 }
 
@@ -67,7 +56,7 @@ contract Project {
         stage = Stage.Ended;
     }
     
-    function funding_status() constant
+    function status() constant
         returns (string project_title, string project_description, string funding_stage,
         uint current_funding_amount, uint final_funding_goal, bool reached_goal)
     {
