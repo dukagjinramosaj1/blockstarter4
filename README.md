@@ -5,7 +5,7 @@ Kickstarter-inspired platform which stores progress and fundings on Blockchain
 Created as project in the course **Advanced Enterprise Computing SS2017** at TU Berlin
 
 ## Functionality and Extension
-|`TODO decide for extension at first meeting 20.06. and try to list requirements`
+|`TODO decide for extension at second update meeting 30.06. and try to list requirements`
 |-----
 
 ## Development
@@ -39,9 +39,6 @@ This project is implemented by **group D**, which consists of the following team
 |Raviprasad M R | raviprasadmr | <r.marikeramesha@campus.tu-berlin.de>
 |Ankita Shah Ashwin| ankita-1301 | <ankita.s.ashwin@campus.tu-berlin.de>
 |Darshan Hingu| darshan0071990 | <hingudarshan@win.tu-berlin.de>
-
-|`TODO please add all your names`
-|----
 
 ### Milestones
 1. First Update Meeting 23.06.
