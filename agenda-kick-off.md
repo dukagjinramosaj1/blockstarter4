@@ -24,3 +24,13 @@
     1. GitHub access - account names
     1. Is Token just funding amount?
     1. Documentation - how granular?
+
+
+Remarks on First Meeting 23.06.2017
+
+    - Limitations and advtantages in report about storing everything on blockhain
+    - Optional - authentication can be further discussed on report 
+    - Discuss more in report about token. 
+        - Price statically 1 ether= 1 token (kind of example-  simple solution)
+    - Documentation - How to setup the project 
+    - Send hhim the link to our github repository 
