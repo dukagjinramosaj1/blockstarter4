@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ethereumjs-testrpc": "^3.0.5"
+    "ethereumjs-testrpc": "^3.0.5",
+    "solc": "^0.4.11",
+    "web3": "^0.19.0"
   }
 }

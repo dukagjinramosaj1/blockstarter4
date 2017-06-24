@@ -12,11 +12,11 @@ contract Blockstarter {
         projects.push(newProject);
     }
     
-    function getProjectCount() constant returns (uint _length) {
-        _length = projects.length;
+    function project_count() constant returns (uint) {
+        return (projects.length);
     }
     
-        function getProjectAddressAt(uint index) constant returns (address project) {
+    function project_address_at(uint index) constant returns (address project) {
         project = projects[index];
     }
 }
