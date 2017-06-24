@@ -22,9 +22,9 @@ const testProjects = [
 
 
 const server = TestRPC.server();
-server.listen(port, testRPCCallback)
+server.listen(port, testRPCCallback, createBlockstarter)
 
-function testRPCCallback(err, blockchain) {
+function testRPCCallback(err, blockchain, next) {
 	if (err) {
 		console.error('could not start testrpc')
 		console.error(err)
@@ -37,11 +37,11 @@ function testRPCCallback(err, blockchain) {
     })
     console.log('-- connect to blockchain --')
     web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:${port}`))
-    createBlockstarter(web3, creatorAddress, blockstarterBytecode, createDummyData)
+    next(web3, creatorAddress, createDummyData)
 	}
 }
 
-function createBlockstarter(web3, creatorAddress, bytecode, next) {
+function createBlockstarter(web3, creatorAddress, next) {
   console.log('-- create blockstarter contract --')
   const contract = web3.eth.contract(blockstarterAbi).new({
     from: creatorAddress,
