@@ -8,6 +8,7 @@ const Web3 = require('web3')
 
 
 const port = 8545
+const networkAddress = `http://localhost:${port}`
 
 const contractSource = fs.readFileSync(path.join(__dirname, 'contracts.sol'))
 
@@ -61,7 +62,7 @@ function testRPCCallback(err, blockchain) {
 }
 
 function createBlockstarter(data) {
-  data.web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:${port}`))
+  data.web3 = new Web3(new Web3.providers.HttpProvider(networkAddress))
   console.log('-- create blockstarter contract --')
   const contract = data.web3.eth.contract(data.blockstarter.abi).new({
     from: data.blockstarter.creator,
@@ -102,6 +103,7 @@ function createDummyData(data) {
 
 function createProject(data, project, next) {
   const randomInt = Math.floor((Math.random() * data.accounts.length))
+  // const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
   const projectContract = data.web3.eth.contract(data.project.abi).new({
     from: data.accounts[randomInt],
     data: data.project.bytecode,
@@ -120,6 +122,7 @@ function createProject(data, project, next) {
 
 function ready(data) {
   const writeData = {
+    networkAddress,
     blockstarter: {
       address: data.blockstarter.address
     },
