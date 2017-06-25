@@ -6,18 +6,16 @@ contract Blockstarter {
     
     address[] projects;
     
-    function createProject(string _title, string _description, uint _funding_goal) {
-        address owner = msg.sender;
-        address newProject = new Project(owner, _title, _description, _funding_goal);
-        projects.push(newProject);
+    function add_project(address project) {
+        projects.push(project);
     }
     
     function project_count() constant returns (uint) {
         return (projects.length);
     }
     
-    function project_address_at(uint index) constant returns (address project) {
-        project = projects[index];
+    function project_address_at(uint index) constant returns (address) {
+        return projects[index];
     }
 }
 
@@ -36,8 +34,8 @@ contract Project {
     
     bool killed = false;
     
-    function Project(address _owner, string _title, string _description, uint _funding_goal) {
-        owner = _owner;
+    function Project(string _title, string _description, uint _funding_goal) {
+        owner = msg.sender;
         title = _title;
         description = _description;
         funding_goal = _funding_goal;
