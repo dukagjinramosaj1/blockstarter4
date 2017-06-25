@@ -20,8 +20,12 @@ Created as project in the course **Advanced Enterprise Computing SS2017** at TU 
 * Presentation (Powerpoint? Google presentation?)
 
 ### Get Started
-|`TODO - how to setup project, how to run/test, ...`
-|-----
+Run the TestRPC from the blockchain folder (after `npm install`)
+```
+npm run testserver
+```
+After that the express server can connect to the blockchain
+
 ## Organisation
 
 An [agenda for the first meeting](agenda-kick-off.md) was created to get quickly into the project.

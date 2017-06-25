@@ -4,6 +4,7 @@
   "description": "",
   "main": "blockchain-setup.js",
   "scripts": {
+    "testserver": "node blockchain-setup.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
