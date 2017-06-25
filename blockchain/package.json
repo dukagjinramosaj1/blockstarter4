@@ -1,0 +1,16 @@
+{
+  "name": "blockchain",
+  "version": "4.0.0",
+  "description": "",
+  "main": "blockchain-setup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereumjs-testrpc": "^3.0.5",
+    "solc": "^0.4.11",
+    "web3": "^0.19.0"
+  }
+}

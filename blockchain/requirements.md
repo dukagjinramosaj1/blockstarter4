@@ -26,5 +26,5 @@
 * Invest
 * Cancel & refund (only as owner)
 * Get share token (only as backer)
-
+* Withdraw/transfer funds if project was successful
 
