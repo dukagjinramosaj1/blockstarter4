@@ -9,7 +9,7 @@ const Web3 = require('web3')
 
 const port = 8545
 
-const contractSource = fs.readFileSync(path.join(__dirname, 'contracts.sol')
+const contractSource = fs.readFileSync(path.join(__dirname, 'contracts.sol'))
 
 console.log('-- compile contract --')
 const compiled = solc.compile(contractSource.toString())
