@@ -34,12 +34,12 @@ app.use(function(err, req, res, next){
   next();
 });
 
-app.get('/createProject', function(req, res){
-  res.render('createProject');
-});
-
 app.get('/listProjects', function(req, res){
     res.render('listProjects');
+});
+
+app.get('/login', function(req, res){
+    res.render('login');
 });
 
 app.get('/investors', function(req, res){
