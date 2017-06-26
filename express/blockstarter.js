@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var session = require('express-session');
 
 app.disable('x-powered-by');
 
@@ -14,6 +15,12 @@ app.use(require('body-parser').urlencoded({extended: true}));
 app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(session({
+    secret: '2C44-4D44-WppQ38S',
+    resave: true,
+    saveUninitialized: true
+}));
 
 // dynamically include routes (Controller)
 fs.readdirSync('./controllers').forEach(function (file) {
@@ -63,10 +70,6 @@ app.use(function(err, req, res, next){
   res.render('500');
 });
 
-
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + ' press Ctrl-C to terminate');
 });
-
-
-

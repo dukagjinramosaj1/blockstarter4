@@ -8,9 +8,14 @@ module.exports.controller = function(app) {
     /**
      * a home page route
      */
-    app.get('/', function(req, res) {
+    var project_count;
+    blockstarter.getProjectCount(function(data){
+        project_count = data;
+    });
 
-         res.render('home')
+    app.get('/', function(req, res) {
+        //console.log(req.session.address);
+        res.render('home', {project_count:project_count});
     });
     /**
      * About Login route
@@ -20,4 +25,13 @@ module.exports.controller = function(app) {
         res.render('login')
     });
 
+    app.post('/submit', function(req, res){
+        if(req.body.address != "") {
+            req.session.address = req.body.address;
+            res.redirect('/');
+        }else{
+            res.redirect('/login');
+        }
+
+    });
 }

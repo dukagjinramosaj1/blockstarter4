@@ -42,8 +42,14 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    {{#if session.address}}
                     <li><a href="/myprojects"><span class="glyphicon glyphicon-stats"></span> Projects</a></li>
                     <li><a href="/myinvests"><span class="glyphicon glyphicon-bitcoin"></span> Investments</a></li>
+                    {{/if}}
+                    {{#else}}
+                    <li><a href="/myprojects"><span class="glyphicon glyphicon-stats"></span> Projects</a></li>
+                    <li><a href="/myinvests"><span class="glyphicon glyphicon-bitcoin"></span> Investments</a></li>
+                    {{/else}}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Login </a></li>
