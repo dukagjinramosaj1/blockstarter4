@@ -32,6 +32,10 @@ module.exports.controller = function(app) {
         }else{
             res.redirect('/login');
         }
+    });
 
+    app.get('/logout',function(req,res){
+        req.session.destroy();
+        res.redirect('/');
     });
 }
