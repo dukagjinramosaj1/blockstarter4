@@ -26,6 +26,23 @@ function getProjectAddressAtIndex(index, callback) {
   })
 }
 
+function getAllAddresses(callback) {
+  getProjectCount(number => {
+    const array = new Array(number)
+    const recursion = function(i, array) {
+      getProjectAddressAtIndex(i, (err, address) => {
+        array[i] = address
+        if (i + 1 == number) {
+          callback(null, array)
+        } else {
+          recursion(i + 1, array)
+        }
+      })
+    }
+    recursion(0, array)
+  })
+}
+
 function getProjectStatusForAddress(address, callback) {
   const project = web3.eth.contract(config.abi.project).at(address)
   project.status((err, result) => {
@@ -47,23 +64,33 @@ function getProjectStatusForAddress(address, callback) {
   })
 }
 
+function getAllStatus(callback) {
+  getAllAddresses((err, addressArray) => {
+    const array = []
+    const recursion = function(i, array) {
+      getProjectStatusForAddress(addressArray[i], (err, status) => {
+        array.push(status)
+        if (i + 1 == addressArray.length) {
+          callback(null, array)
+        } else {
+          recursion(i + 1, array)
+        }
+      })
+    }
+    recursion(0, array)
+  })
+}
+
 
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
   getProjectAddressAtIndex,
+  getAllAddresses,
+  getProjectStatusForAddress,
+  getAllStatus
 }
 
 
 // just for testing, has to removed afterwards
-// getProjectCount(number => console.log(`${number} projects available`));
-// getProjectAddressAtIndex(0, (err, address) => {
-//   getProjectStatusForAddress(address, (err, status) => {
-//      console.log(status)
-//   })
-// })
-// getProjectAddressAtIndex(1, (err, address) => {
-//   getProjectStatusForAddress(address, (err, status) => {
-//      console.log(status)
-//   })
-// })
+getAllStatus((err, array) => array.forEach(x => console.log('status', x)))
