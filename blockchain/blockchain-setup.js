@@ -27,12 +27,12 @@ const data = {
   },
   testProjects: [
     {
-      name: "Project X",
+      title: "Project X",
       description: "The Project of the projects",
       fundingGoal: 300
     },
     {
-      name: "Fund my Mom",
+      title: "Fund my Mom",
       description: "My Mom is broke and needs money",
       fundingGoal: 6000
     }
@@ -103,8 +103,7 @@ function createDummyData(data) {
 
 function createProject(data, project, next) {
   const randomInt = Math.floor((Math.random() * data.accounts.length))
-  // const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
-  const projectContract = data.web3.eth.contract(data.project.abi).new({
+  const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
     from: data.accounts[randomInt],
     data: data.project.bytecode,
     gas: 2100000

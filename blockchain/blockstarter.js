@@ -13,20 +13,57 @@ function getProjectCount(callback) {
   })
 }
 
+
 // return the address of project #x
-function getProjectAddressAtIndex(callback) {
+function getProjectAddressAtIndex(index, callback) {
   // TODO
+  blockstarter.project_address_at(index, (err, result) => {
+  	if (err) {
+  		callback(err)
+  	} else {
+  		callback(null, result)
+  	}
+  })
 }
+
+function getProjectStatusForAddress(address, callback) {
+  const project = web3.eth.contract(config.abi.project).at(address)
+  project.status((err, result) => {
+  	if (err) {
+  		callback(err)
+  	} else {
+      const status = {
+        address,
+        owner: result[0],
+        title: result[1],
+        description: result[2],
+        stage: result[3],
+        currentFunding: result[4].c[0],
+        fundingGoal: result[5].c[0],
+        fundingGoalReached: result[6]
+      }
+  		callback(null, status)
+  	}
+  })
+}
+
 
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
-  getProjectAddressAtIndex
-  // TODO add other methods like 'getProjectStatus', ...
+  getProjectAddressAtIndex,
 }
 
 
 // just for testing, has to removed afterwards
-// getProjectCount(number => console.log(`${number} projects available`))
-
-
+// getProjectCount(number => console.log(`${number} projects available`));
+// getProjectAddressAtIndex(0, (err, address) => {
+//   getProjectStatusForAddress(address, (err, status) => {
+//      console.log(status)
+//   })
+// })
+// getProjectAddressAtIndex(1, (err, address) => {
+//   getProjectStatusForAddress(address, (err, status) => {
+//      console.log(status)
+//   })
+// })
