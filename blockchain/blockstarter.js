@@ -52,3 +52,8 @@ module.exports = {
       console.log(status)
    })
  })
+ getProjectAddressAtIndex(1, (err, address) => {
+   getProjectStatusForAddress(address, (err, status) => {
+      console.log(status)
+   })
+ })
