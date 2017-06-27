@@ -23,45 +23,32 @@ function getProjectAddressAtIndex(index, callback) {
   	} else {
   		callback(null, result)
   	}
- 	
   })
 }
 
-
-
-/*function getAllProjectAddresses(callback){
-	
-  for (int i ... < 
-	
-	}*/
-/*
-function getAllProjectStatus(address,callback){
-
-	
-
-}*/
-
-/*
-function getProjectStatusForAddress(){
-
-
-}*/
-
-
+function getProjectStatusForAddress(address, callback) {
+  const project = web3.eth.contract(config.abi.project).at(address)
+  project.status((err, result) => {
+  	if (err) {
+  		callback(err)
+  	} else {
+  		callback(null, result)
+  	}
+  })
+}
 
 
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
   getProjectAddressAtIndex,
-  getAllProjectAddresses,
- /* getProjectStatusForAddress,
-  getAllProjectStatus*/
-  // TODO add other methods like 'getProjectStatus', ...
 }
 
 
 // just for testing, has to removed afterwards
  getProjectCount(number => console.log(`${number} projects available`));
- getProjectAddressAtIndex(0, (err, address) => console.log(`project address at 1 : ${address}`))
- getAllProjectAddresses(0, (err,project_owner) => console.log('{project_owner}'))
+ getProjectAddressAtIndex(0, (err, address) => {
+   getProjectStatusForAddress(address, (err, status) => {
+      console.log(status)
+   })
+ })
