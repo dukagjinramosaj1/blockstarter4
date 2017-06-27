@@ -133,8 +133,8 @@ function ready(data) {
   }
   fs.writeFileSync(path.join(__dirname, 'blockstarterData.json'), JSON.stringify(writeData))
   data.blockstarter.contract.project_count((err, result) => {
-    console.log(`${result.c[0]} projects deployed successfully`)
+    console.log(`    ${result.c[0]} projects deployed successfully`)
+    console.log(`-- startup done --`)
   })
 }
 
-// const blockstarter = data.web3.eth.contract(data.blockstarter.abi).at(`${data.blockstarter.address}`)
