@@ -13,7 +13,6 @@ function getProjectCount(callback) {
   })
 }
 
-
 // return the address of project #x
 function getProjectAddressAtIndex(index, callback) {
   // TODO
@@ -81,6 +80,18 @@ function getAllStatus(callback) {
   })
 }
 
+//Invest in a project
+function investInProject(projectAddress, backer, amount, callback ) {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.invest.sendTransaction({value:amount, gas:210000, from: backer}, (err, result) => {
+        if (err) {
+            callback(err)
+        } else {
+            callback(null, result)
+        }
+    })
+}
+
 
 // export all the methods that should be provided to express
 module.exports = {
@@ -91,6 +102,11 @@ module.exports = {
   getAllStatus
 }
 
-
 // just for testing, has to removed afterwards
-getAllStatus((err, array) => array.forEach(x => console.log('status', x)))
+getProjectAddressAtIndex(0, (err, pAddress) => {
+    investInProject(pAddress, '0x52577834ee6ce0d6a3e1aac3b7c5ba08a3a7790e', 500, (err, result) => {
+        if (err) console.log('err', err)
+        getAllStatus((err, array) => array.forEach(x => console.log('status', x)))
+    })
+})
+
