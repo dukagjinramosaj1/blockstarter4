@@ -32,7 +32,17 @@ function getProjectStatusForAddress(address, callback) {
   	if (err) {
   		callback(err)
   	} else {
-  		callback(null, result)
+      const status = {
+        address,
+        owner: result[0],
+        title: result[1],
+        description: result[2],
+        stage: result[3],
+        currentFunding: result[4].c[0],
+        fundingGoal: result[5].c[0],
+        fundingGoalReached: result[6]
+      }
+  		callback(null, status)
   	}
   })
 }
@@ -46,14 +56,14 @@ module.exports = {
 
 
 // just for testing, has to removed afterwards
- getProjectCount(number => console.log(`${number} projects available`));
- getProjectAddressAtIndex(0, (err, address) => {
-   getProjectStatusForAddress(address, (err, status) => {
-      console.log(status)
-   })
- })
- getProjectAddressAtIndex(1, (err, address) => {
-   getProjectStatusForAddress(address, (err, status) => {
-      console.log(status)
-   })
- })
+// getProjectCount(number => console.log(`${number} projects available`));
+// getProjectAddressAtIndex(0, (err, address) => {
+//   getProjectStatusForAddress(address, (err, status) => {
+//      console.log(status)
+//   })
+// })
+// getProjectAddressAtIndex(1, (err, address) => {
+//   getProjectStatusForAddress(address, (err, status) => {
+//      console.log(status)
+//   })
+// })

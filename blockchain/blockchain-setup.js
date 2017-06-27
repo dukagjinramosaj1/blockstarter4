@@ -103,8 +103,6 @@ function createDummyData(data) {
 
 function createProject(data, project, next) {
   const randomInt = Math.floor((Math.random() * data.accounts.length))
-  // const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
-  console.log('create project', project.title, project.description, project.fundingGoal)
   const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
     from: data.accounts[randomInt],
     data: data.project.bytecode,
