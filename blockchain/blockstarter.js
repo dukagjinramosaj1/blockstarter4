@@ -13,20 +13,55 @@ function getProjectCount(callback) {
   })
 }
 
+
 // return the address of project #x
-function getProjectAddressAtIndex(callback) {
+function getProjectAddressAtIndex(index, callback) {
   // TODO
+  blockstarter.project_address_at(index, (err, result) => {
+  	if (err) {
+  		callback(err)
+  	} else {
+  		callback(null, result)
+  	}
+ 	
+  })
 }
+
+
+
+/*function getAllProjectAddresses(callback){
+	
+  for (int i ... < 
+	
+	}*/
+/*
+function getAllProjectStatus(address,callback){
+
+	
+
+}*/
+
+/*
+function getProjectStatusForAddress(){
+
+
+}*/
+
+
+
 
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
-  getProjectAddressAtIndex
+  getProjectAddressAtIndex,
+  getAllProjectAddresses,
+ /* getProjectStatusForAddress,
+  getAllProjectStatus*/
   // TODO add other methods like 'getProjectStatus', ...
 }
 
 
 // just for testing, has to removed afterwards
-// getProjectCount(number => console.log(`${number} projects available`))
-
-
+ getProjectCount(number => console.log(`${number} projects available`));
+ getProjectAddressAtIndex(0, (err, address) => console.log(`project address at 1 : ${address}`))
+ getAllProjectAddresses(0, (err,project_owner) => console.log('{project_owner}'))

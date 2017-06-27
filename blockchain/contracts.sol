@@ -17,6 +17,8 @@ contract Blockstarter {
     function project_address_at(uint index) constant returns (address) {
         return projects[index];
     }
+
+    
 }
 
 contract Project { 
@@ -55,7 +57,7 @@ contract Project {
     }
     
     function status() constant
-        returns (string project_title, string project_description, string funding_stage,
+        returns (address project_owner, string project_title, string project_description, string funding_stage,
         uint current_funding_amount, uint final_funding_goal, bool reached_goal)
     {
         current_funding_amount = this.balance;
@@ -68,7 +70,8 @@ contract Project {
         } else if (stage == Stage.Ended) {
             funding_stage = "Ended";
         }
-        return (project_title, project_description, funding_stage,
+        project_owner = owner;
+        return (project_owner, project_title, project_description, funding_stage,
             current_funding_amount, final_funding_goal, reached_goal);
     }
     
