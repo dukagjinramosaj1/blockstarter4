@@ -8,13 +8,15 @@ module.exports.controller = function(app) {
     /**
      * a home page route
      */
-    var project_count;
-    blockstarter.getProjectCount()
-      .then(count => project_count = count);
 
-    app.get('/', function(req, res) {
-        //console.log(req.session.address);
-        res.render('home', {project_count:project_count});
+
+
+    app.get('/', (req,res) => {
+      const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus()]
+      Promise.all(promises)
+      .then(result =>{
+        res.render('home', {project_count:result[0],projects:result[1]});
+      });
     });
     /**
      * About Login route

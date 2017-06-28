@@ -4,3 +4,9 @@
         <h5>Overall Projects {{project_count}}</h5>
     </div>
 </div>
+
+<div>
+  {{#each projects as |project|}}
+  <h5>{{project.title}}</h5>
+  {{/each}}
+</div>
