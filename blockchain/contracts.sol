@@ -9,6 +9,24 @@ contract Blockstarter {
     function add_project(address project) {
         projects.push(project);
     }
+
+	function remove_project(address project) {
+		uint i = 0;
+		bool found = false;
+		for (; i < projects.length; i++) {
+			if (found) {
+				projects[i] = projects[i+1];
+			} else {
+				if (projects[i] == project) {
+					found = true;
+					delete projects[i];
+				}
+			}
+		}
+		if (found) {
+			array.length--;
+		}
+	}
     
     function project_count() constant returns (uint) {
         return (projects.length);

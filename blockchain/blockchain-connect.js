@@ -152,6 +152,28 @@ function getAllProjectsForFunder(funder) {
     })
 }
 
+function cancelAndRefundProject(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    console.log('try to delete project', projectAddress)
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.kill((err) => {
+      console.log('err1')
+      if (err) {
+        reject(err)
+      } else {
+        blockstarter.remove_project(projectAddress, {from: owner, gas: 210000}, (err) => {
+          if (err) {
+            console.log('err2')
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      }
+    })
+  })
+}
+
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
@@ -169,8 +191,13 @@ module.exports = {
 // just for testing, has to removed afterwards
 // createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
 
-// getAllFundedStatus(config.accounts[9])
-//   .then(console.log)
+cancelAndRefundProject('0x1c67ee3dbf81e7e4fda7a372237469330129fce3', config.accounts[4])
+  .catch(console.error)
+
+getAllAddresses().then(console.log)
+
+getAllStatus()
+  .then(console.log)
 
 
 
