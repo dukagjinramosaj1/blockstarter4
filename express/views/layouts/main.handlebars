@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {{>head}}
     <title>Blockstarter4.0</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/custom.css">
 </head>
 <body>
 
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button><a class="pull-left" href="/"><img src="/img/logo.png"></a></div>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav navbar-left">
-                    <li><a href="/"><span class="glyphicon glyphicon-home" style="color:#3366ff"></span> Home</a></li>
-                    {{#if success}}
-                        <li><a href="/myprojects"><span class="glyphicon glyphicon-stats" style="color:#3366ff"></span> My Projects</a></li>
-                        <li><a href="/myinvests"><span class="glyphicon glyphicon-bitcoin" style="color:#3366ff"></span> My Investments</a></li>
-                    {{/if}}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {{#if success}}
-                        <li><a href="/logout"><span class="glyphicon glyphicon-user" style="color:#3366ff"></span> Logout </a></li>
-                    {{else}}
-                        <li><a href="/login"><span class="glyphicon glyphicon-user" style="color:#3366ff"></span> Login </a></li>
-                    {{/if}}
-                </ul>
-            </div>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="/img/logo.png" width="30" height="30" alt="">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><span class="fa fa-home" style="color:#3366ff"></span> Home</a>
+                </li>
+                {{#if success}}
+                    <li class="nav-item">
+                        <a class="nav-link " href="/myprojects"><span class="fa fa-product-hunt" style="color:#3366ff"></span> My Projects</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link " href="/myinvests"><span class="fa fa-btc" style="color:#3366ff"></span> My Investments</a></li>
+                {{/if}}
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                {{#if success}}
+                    <li class="nav-item"><a href="/logout"><span class="fa fa-user-circle-o" style="color:#3366ff"></span> Logout </a></li>
+                {{else}}
+                    <li class="nav-item"><a href="/login"><span class="fa fa-user-circle-o" style="color:#3366ff"></span> Login </a></li>
+                {{/if}}
+            </ul>
         </div>
     </nav>
 </div>
 
 
-<div class="container">
+<div class="container mt-4">
     {{#if error}}
         <p class="alert alert-warning">{{error}}</p>
     {{/if}}
     {{{body}}}
 </div>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </body>
 </html>
