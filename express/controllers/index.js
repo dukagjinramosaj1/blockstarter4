@@ -2,16 +2,15 @@
  * Created by darshan on 26.06.17.
  */
 
-var blockstarter = require('../../blockchain/blockstarter');
+var blockstarter = require('../../blockchain/blockchain-connect');
 module.exports.controller = function(app) {
 
     /**
      * a home page route
      */
     var project_count;
-    blockstarter.getProjectCount(function(data){
-        project_count = data;
-    });
+    blockstarter.getProjectCount()
+      .then(count => project_count = count);
 
     app.get('/', function(req, res) {
         //console.log(req.session.address);

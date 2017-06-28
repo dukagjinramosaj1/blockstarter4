@@ -123,6 +123,7 @@ module.exports = {
   getAllAddresses,
   getProjectStatusForAddress,
   getAllStatus,
+  investInProject,
   createProject
 }
 
