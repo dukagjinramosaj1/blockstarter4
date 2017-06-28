@@ -6,90 +6,81 @@ const web3 = new Web3(new Web3.providers.HttpProvider(config.networkAddress))
 const blockstarter = web3.eth.contract(config.abi.blockstarter).at(config.blockstarter.address)
 
 // provide a function to just return the project count
-function getProjectCount(callback) {
-  blockstarter.project_count((err, result) => {
-    // we always have to work with callbacks with blockchain calls (or promises)
-    callback(result.c[0])
+function getProjectCount() {
+  return new Promise((resolve, reject) => {
+    blockstarter.project_count((err, result) => {
+      if (err) reject(err)
+      else resolve(result.c[0])
+    })
   })
 }
 
-// return the address of project #x
-function getProjectAddressAtIndex(index, callback) {
-  // TODO
-  blockstarter.project_address_at(index, (err, result) => {
-  	if (err) {
-  		callback(err)
-  	} else {
-  		callback(null, result)
-  	}
-  })
-}
-
-function getAllAddresses(callback) {
-  getProjectCount(number => {
-    const array = new Array(number)
-    const recursion = function(i, array) {
-      getProjectAddressAtIndex(i, (err, address) => {
-        array[i] = address
-        if (i + 1 == number) {
-          callback(null, array)
-        } else {
-          recursion(i + 1, array)
-        }
-      })
-    }
-    recursion(0, array)
-  })
-}
-
-function getProjectStatusForAddress(address, callback) {
-  const project = web3.eth.contract(config.abi.project).at(address)
-  project.status((err, result) => {
-  	if (err) {
-  		callback(err)
-  	} else {
-      const status = {
-        address,
-        owner: result[0],
-        title: result[1],
-        description: result[2],
-        stage: result[3],
-        currentFunding: result[4].c[0],
-        fundingGoal: result[5].c[0],
-        fundingGoalReached: result[6]
+function getProjectAddressAtIndex(index) {
+  return new Promise((resolve, reject) => {
+    blockstarter.project_address_at(index, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
       }
-  		callback(null, status)
-  	}
+    })
   })
 }
 
-function getAllStatus(callback) {
-  getAllAddresses((err, addressArray) => {
-    const array = []
-    const recursion = function(i, array) {
-      getProjectStatusForAddress(addressArray[i], (err, status) => {
-        array.push(status)
-        if (i + 1 == addressArray.length) {
-          callback(null, array)
-        } else {
-          recursion(i + 1, array)
-        }
-      })
-    }
-    recursion(0, array)
+function range(size) {
+  return Array.from(new Array(size), (x,i) => i)
+}
+
+function getAllAddresses() {
+  return getProjectCount()
+    .then(number => range(number))
+    .then(array => Promise.all(array.map(x => getProjectAddressAtIndex(x))))
+}
+
+function getProjectStatusForAddress(address) {
+  const project = web3.eth.contract(config.abi.project).at(address)
+
+  return new Promise((resolve, reject) => {
+    project.status((err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve({
+          address,
+          owner: result[0],
+          title: result[1],
+          description: result[2],
+          stage: result[3],
+          currentFunding: result[4].c[0],
+          fundingGoal: result[5].c[0],
+          fundingGoalReached: result[6]
+        })
+      }
+    })
   })
 }
 
-//Invest in a project
-function investInProject(projectAddress, backer, amount, callback ) {
+
+function getAllStatus() {
+  return getAllAddresses()
+    .then(addresses => {
+      const map = addresses.map(a => getProjectStatusForAddress(a))
+      return Promise.all(map)
+    })
+}
+
+//Invest in a project - unsigned transaction
+function investInProject(projectAddress, backer, amount) {
+  return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
     project.invest.sendTransaction({value:amount, gas:210000, from: backer}, (err, result) => {
-        if (err) {
-            callback(err)
-        } else {
-            callback(null, result)
-        }
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
     })
+  })
 }
 
 
@@ -103,10 +94,12 @@ module.exports = {
 }
 
 // just for testing, has to removed afterwards
-getProjectAddressAtIndex(0, (err, pAddress) => {
-    investInProject(pAddress, '0x52577834ee6ce0d6a3e1aac3b7c5ba08a3a7790e', 500, (err, result) => {
-        if (err) console.log('err', err)
-        getAllStatus((err, array) => array.forEach(x => console.log('status', x)))
-    })
-})
+getProjectCount()
+  .then(console.log)
+
+getAllAddresses()
+  .then(console.log)
+
+getAllStatus()
+  .then(console.log)
 
