@@ -87,4 +87,13 @@ contract Project {
         }
         selfdestruct(owner);
     }
+
+    function is_funder(address funder) constant returns (bool) {
+      for (var i = 0; i < investors.length; i++) {
+        if (investors[i] == funder) {
+          return true;
+        }
+      }
+      return false;
+    }
 }

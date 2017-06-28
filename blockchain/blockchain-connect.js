@@ -69,6 +69,14 @@ function getAllStatus() {
     })
 }
 
+function getAllFundedStatus(funder) {
+  return getAllProjectsForFunder(funder)
+    .then(addresses => {
+      const map = addresses.map(a => getProjectStatusForAddress(a))
+      return Promise.all(map)
+    })
+}
+
 //Invest in a project - unsigned transaction
 function investInProject(projectAddress, backer, amount) {
   return new Promise((resolve, reject) => {
@@ -115,6 +123,32 @@ function registerProject(address, creator) {
   })
 }
 
+function isFunderInProject(funder, projectAddress) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.is_funder(funder, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+
+function getAllProjectsForFunder(funder) {
+  return getAllAddresses()
+    .then(array => {
+      const promises = array.map(pAdd => isFunderInProject(funder, pAdd))
+      return Promise.all(promises)
+        .then(funderBools => {
+          return array.filter(pAdd => funderBools[array.indexOf(pAdd)])
+        })
+    })
+}
+
+
+
 
 // export all the methods that should be provided to express
 module.exports = {
@@ -123,13 +157,17 @@ module.exports = {
   getAllAddresses,
   getProjectStatusForAddress,
   getAllStatus,
+  getAllProjectsForFunder,
   investInProject,
-  createProject
+  createProject,
+  getAllFundedStatus
 }
 
 // just for testing, has to removed afterwards
+// createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
 
-createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
-  .then(getAllStatus)
-  .then(console.log)
-  .catch(console.error)
+// getAllFundedStatus(config.accounts[9])
+//   .then(console.log)
+
+
+

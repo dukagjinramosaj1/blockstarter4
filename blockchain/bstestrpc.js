@@ -40,7 +40,7 @@ compileContract(data)
   .then(data => createDummyData(data))
   .then(data => createConfig(data))
   .then(() => console.log('-- startup done--'))
-  .catch(x => console.error(x))
+  .catch(console.error)
 
 function compileContract(data) {
   return new Promise((resolve, reject) => {
@@ -52,6 +52,7 @@ function compileContract(data) {
     data.blockstarter.bytecode = compiled.contracts[':Blockstarter'].bytecode
     data.project.abi = JSON.parse(compiled.contracts[':Project'].interface)
     data.project.bytecode = compiled.contracts[':Project'].bytecode
+    console.log(compiled)
     resolve(data)
   })
 }
