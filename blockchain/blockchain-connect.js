@@ -77,6 +77,11 @@ function getAllFundedStatus(funder) {
     })
 }
 
+function getAllOwnedStatus(owner) {
+  return getAllStatus()
+    .then(projects => projects.filter(projects.owner === owner))
+}
+
 //Invest in a project - unsigned transaction
 function investInProject(projectAddress, backer, amount) {
   return new Promise((resolve, reject) => {
@@ -147,20 +152,18 @@ function getAllProjectsForFunder(funder) {
     })
 }
 
-
-
-
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
   getProjectAddressAtIndex,
   getAllAddresses,
-  getProjectStatusForAddress,
   getAllStatus,
+  getAllFundedStatus,
+  getAllOwnedStatus,
+  getProjectStatusForAddress,
   getAllProjectsForFunder,
   investInProject,
-  createProject,
-  getAllFundedStatus
+  createProject
 }
 
 // just for testing, has to removed afterwards
