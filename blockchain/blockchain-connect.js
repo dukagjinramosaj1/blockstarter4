@@ -73,12 +73,44 @@ function getAllStatus() {
 function investInProject(projectAddress, backer, amount) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.invest.sendTransaction({value:amount, gas:210000, from: backer}, (err, result) => {
+    project.invest.sendTransaction(
+      {value:amount, gas:210000, from: backer},
+      (err, result) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+  })
+}
+
+function createProject(creator, title, description, fundingGoal) {
+  return new Promise((resolve, reject) => {
+    web3.eth.contract(config.abi.project).new(title, description, fundingGoal, {
+      from: creator,
+      data: config.bytecode.project,
+      gas: 2100000
+    }, (err, contract) => {
       if (err) {
         reject(err)
       } else {
-        resolve(result)
+        if (contract.address) {
+          // register in global contract
+          registerProject(contract.address, creator)
+            .then(() => resolve(contract.address))
+            .catch(reject)
+        }
       }
+    })
+  })
+}
+
+function registerProject(address, creator) {
+  return new Promise((resolve, reject) => {
+    blockstarter.add_project(address, {from: creator, gas: 210000}, (err) => {
+      if (err) reject(err)
+      else resolve()
     })
   })
 }
@@ -90,16 +122,13 @@ module.exports = {
   getProjectAddressAtIndex,
   getAllAddresses,
   getProjectStatusForAddress,
-  getAllStatus
+  getAllStatus,
+  createProject
 }
 
 // just for testing, has to removed afterwards
-getProjectCount()
-  .then(console.log)
 
-getAllAddresses()
+createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
+  .then(getAllStatus)
   .then(console.log)
-
-getAllStatus()
-  .then(console.log)
-
+  .catch(console.error)

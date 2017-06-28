@@ -148,6 +148,9 @@ function createConfig(data) {
         blockstarter: data.blockstarter.abi,
         project: data.project.abi
       },
+      bytecode: {
+        project: data.project.bytecode
+      },
       accounts: data.accounts,
     }
     fs.writeFileSync(path.join(__dirname, 'blockstarterData.json'), JSON.stringify(writeData))
