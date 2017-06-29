@@ -36,4 +36,21 @@ module.exports.controller = function(app) {
         req.session.destroy();
         res.redirect('/');
     });
+
+    app.get('/:id/detail', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('detail',{data:data});
+        });
+
+    });
+
+    app.get('/myprojects/:id/view', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('view',{data:data});
+        });
+
+    });
+
 }

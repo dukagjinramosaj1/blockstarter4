@@ -4,12 +4,17 @@
 var blockstarter = require('../../blockchain/blockchain-connect');
 module.exports.controller = function(app) {
 
+    app.get('/myprojects/view/:id', function(req, res) {
+        res.render('view');
+    });
+
     /**
      * a home page route
      */
 
     app.get('/myprojects', function(req, res) {
-        blockstarter.getAllOwnedStatus(req.session.address)
+        // blockstarter.getAllOwnedStatus(req.session.address)
+        blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
                 console.log(data);
                 res.render('listProjects',{data:data});
@@ -29,9 +34,10 @@ module.exports.controller = function(app) {
 
         if(req.body.title != "" && req.body.description != "" && req.body.fundinggoal != ""){
             blockstarter.createProject(req.session.address, title, description, fundinggoal).then(function(data){console.log(data)});
-            res.redirect('/listProjects');
+            res.redirect('/myprojects');
         }
     });
+
 
 
 }

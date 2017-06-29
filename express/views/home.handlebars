@@ -11,7 +11,7 @@
 <div class="row mt-3">
     {{#each data}}
         <div class="col-sm-4">
-            <div class="card mt-3" style="width: 20rem;">
+            <a class="card mt-3" style="width: 20rem;color: #333;text-decoration : none" href="/{{address}}/detail">
                 <div class="card-block">
                     <h4 class="card-title">{{title}}</h4>
                     <p class="card-text">{{description}}</p>
@@ -26,7 +26,7 @@
                         <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
                     {{/if}}
                 </ul>
-            </div>
+            </a>
         </div>
     {{/each}}
 </div>

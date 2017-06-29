@@ -50,54 +50,6 @@ fs.readdirSync('./controllers').forEach(function (file) {
     }
 });
 
-app.use(function(req, res, next){
-    console.log("Looking for URL : " + req.url);
-    next();
-});
-
-
-// app.use(function(err, req, res, next){
-//   console.log('Error : ' + err.message);
-//   next();
-// });
-
-app.get('/listProjects', function(req, res){
-    res.render('listProjects');
-});
-
-// app.get('/login', function(req, res){
-//     res.render('login');
-// });
-
-// app.get('/investors', function(req, res){
-//   res.render('investors');
-// });
-//
-// app.get('/createProject', function(req, res){
-//     res.render('createProject');
-// });
-
-
-function isloggin(){
-    if(session.address){
-        console.log("In If");
-    }else{
-        console.log("In else");
-    }
-}
-// app.use(function(req, res){
-//   res.type('text/html');
-//   res.status(404);
-//   res.render('404');
-// });
-//
-// app.use(function(err, req, res, next){
-//   console.error(err.stack);
-//   res.status(500);
-//   res.render('500');
-// });
-
-
 app.listen(app.get('port'), function(){
     console.log('Express started on http://localhost:' + app.get('port') + ' press Ctrl-C to terminate');
 });

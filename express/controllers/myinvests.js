@@ -9,11 +9,13 @@ module.exports.controller = function(app) {
      */
 
     app.get('/myinvests', function(req, res) {
-        blockstarter.getAllProjectsForFunder(req.session.address)
-        .then(function (data) {
-            res.render('investors',{data:data});
-        }).catch((error) => {
-            res.render('investors',{data:"false"});
+        //blockstarter.getAllProjectsForFunder(req.session.address)
+        blockstarter.getAllStatus(req.session.address)
+            .then(function (data) {
+                console.log(data);
+                res.render('investors',{data:data});
+            }).catch((error) => {
+            res.render('investors',{data:""});
         });
     });
 
