@@ -24,7 +24,7 @@ contract Blockstarter {
 			}
 		}
 		if (found) {
-			array.length--;
+			projects.length--;
 		}
 	}
     
@@ -114,4 +114,19 @@ contract Project {
       }
       return false;
     }
+    
+    
+     /// Mapping of ether shares of the contract.
+     mapping(address => uint) balance;
+    /// Withdraw your share.
+    function fundsWithdraw(uint amount) {
+        var fund = balance[msg.sender];
+        // We zero the pending refund before
+        // sending to prevent re-entrancy on function (avoiding any recursion)
+        balance[msg.sender] = 0;
+        msg.sender.transfer(fund);
+    }
+    
+    
+    
 }
