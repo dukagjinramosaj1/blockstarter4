@@ -115,18 +115,11 @@ contract Project {
       return false;
     }
     
-    
-     /// Mapping of ether shares of the contract.
-     mapping(address => uint) balance;
-    /// Withdraw your share.
-    function fundsWithdraw(uint amount) {
-        var fund = balance[msg.sender];
-        // We zero the pending refund before
-        // sending to prevent re-entrancy on function (avoiding any recursion)
-        balance[msg.sender] = 0;
-        msg.sender.transfer(fund);
+    function withdraw(uint amount) {
+		if (stage != Stage.Ended) throw;
+		if (msg.sender != owner) throw;
+		if (amount == 0) return;
+		if (amount > this.balance) throw;
+        owner.transfer(amount);
     }
-    
-    
-    
 }
