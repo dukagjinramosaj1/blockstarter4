@@ -1,25 +1,25 @@
-<div class="page-header">
-    <h3>My Investments</h3>
-    </div>
-<div class="container">
-    {{#if data}}
-        <div class="row mt-3">
-            {{#each data}}
-                <div class="col-sm-4">
-                    <div class="card" style="width: 20rem;">
-                        <div class="card-block">
-                            <h4 class="card-title">{{title}}</h4>
-                            <p class="card-text">{{description}}</p>
-                            <p class="card-subtitle">Current Funding: {{currentFunding}}</p>
-                            <p class="card-button">
-                                <a href="/myinvests/investInProject" class="btn btn-primary btn-sm pull-right" role="button"><span class="fa fa-edit"></span> Invest in Project</a>
-                            </p>
-                        </div>
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">Home</a>
+    <span class="breadcrumb-item active">My Investments</span>
+</nav>
+
+{{#if data}}
+    <div class="row mt-3">
+        {{#each data}}
+            <div class="col-sm-4">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text">{{description}}</p>
+                        <p class="card-subtitle">Current Funding: {{currentFunding}}</p>
+                        <p class="card-button">
+                            <a href="/myinvests/investInProject" class="btn btn-primary btn-sm pull-right" role="button"><span class="fa fa-edit"></span> Invest in Project</a>
+                        </p>
                     </div>
                 </div>
-            {{/each}}
-        </div>
-    {{else}}
-        <p class="alert alert-warning">You have not yet invested in any project.</p>
-    {{/if}}
-</div>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    <p class="alert alert-warning">You have not yet invested in any project.</p>
+{{/if}}

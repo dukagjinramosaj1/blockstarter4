@@ -1,25 +1,33 @@
-<div id="container">
-    <div class="jumbotron">
-        <h4>Welcome to Blockstarter4.0</h4>
-    </div>
+<nav class="breadcrumb">
+    <span class="breadcrumb-item active">Home</span>
+</nav>
+
+<div class="container">
     <div class="row justify-content-end">
         <h5>Overall Projects {{project_count}}</h5>
     </div>
-    <div class="row">
-        {{#each data}}
-            <div class="col-sm-4">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-block">
-                        <h4 class="card-title">{{title}}</h4>
-                        <p class="card-text">{{description}}</p>
-                        <p class="card-subtitle">Stage: {{stage}}</p>
-                        <p class="card-subtitle">Current Funding: {{currentFunding}}</p>
-                        <p class="card-subtitle">Required Funding:{{fundingGoal}}</p>
-                        <p class="card-subtitle">Goal Reached: {{fundingGoalReached}}</p>
-                    </div>
+</div>
+
+<div class="row mt-3">
+    {{#each data}}
+        <div class="col-sm-4">
+            <div class="card" style="width: 20rem;">
+                <div class="card-block">
+                    <h4 class="card-title">{{title}}</h4>
+                    <p class="card-text">{{description}}</p>
                 </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{stage}}</li>
+                    <li class="list-group-item">Current Funding:&nbsp;{{currentFunding}}</li>
+                    <li class="list-group-item">Required Funding:&nbsp;{{fundingGoal}}</li>
+                    {{#if fundingGoalReachd}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
+                    {{else}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
+                    {{/if}}
+                </ul>
             </div>
-        {{/each}}
-    </div>
+        </div>
+    {{/each}}
 </div>
 

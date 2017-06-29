@@ -7,16 +7,16 @@ module.exports.controller = function(app) {
     /**
      * a home page route
      */
+
     app.get('/myinvests', function(req, res) {
         blockstarter.getAllProjectsForFunder(req.session.address)
-            .then(function (data) {
-                console.log(data)
-                res.render('investedProjects',{data:data})
-            }).catch(error) => {
-            res.render('investedProjects',{data:"false"})
-        }
-
+        .then(function (data) {
+            res.render('investors',{data:data});
+        }).catch((error) => {
+            res.render('investors',{data:"false"});
+        });
     });
+
     app.get('/myinvests/investInProject',function (req, res) {
         console.log(req.body.address)
         var projectAddress = req.body.projectAddress;
