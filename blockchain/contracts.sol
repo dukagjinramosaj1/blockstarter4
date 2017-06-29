@@ -1,10 +1,16 @@
 pragma solidity ^0.4.0;
 
 contract Blockstarter {
+
+    address owner;
+
+    function Blockstarter() {
+        owner = msg.sender;
+    }
     
-    function Blockstarter() {}
-    
-    address[] projects;
+    mapping ( address => address[]) userProjects;
+
+    event ProjectCreated(address project, address owner);
     
     function add_project(address project) {
         projects.push(project);
@@ -16,6 +22,18 @@ contract Blockstarter {
     
     function project_address_at(uint index) constant returns (address) {
         return projects[index];
+    }
+
+    function createProject(string _title, string _description, uint _fundingGoal)returns (address projectAddress){
+        address _owner = msg.sender;
+        Project project = new Project(_owner, _title, _description, _fundingGoal);
+        address projectAddress = address=(project);
+        userProjects[_owner].push(projectAddress);
+        ProjectCreated(projectAddress, msg.sender);
+    }
+
+    function kill(){
+        if(msg.sender == owner) selfdestruct(owner);
     }
 
     
@@ -36,8 +54,8 @@ contract Project {
     
     bool killed = false;
     
-    function Project(string _title, string _description, uint _funding_goal) {
-        owner = msg.sender;
+    function Project(address _owner, string _title, string _description, uint _funding_goal) {
+        owner = _owner;
         title = _title;
         description = _description;
         funding_goal = _funding_goal;
