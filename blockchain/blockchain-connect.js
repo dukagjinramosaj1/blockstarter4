@@ -79,7 +79,7 @@ function getAllFundedStatus(funder) {
 
 function getAllOwnedStatus(owner) {
   return getAllStatus()
-    .then(projects => projects.filter(projects.owner === owner))
+    .then(projects => projects.filter(p => p.owner === owner))
 }
 
 //Invest in a project - unsigned transaction
@@ -152,6 +152,53 @@ function getAllProjectsForFunder(funder) {
     })
 }
 
+function cancelAndRefundProject(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.kill((err) => {
+      console.log('err1')
+      if (err) {
+        reject(err)
+      } else {
+        blockstarter.remove_project(projectAddress, {from: owner, gas: 210000}, (err) => {
+          if (err) {
+            console.log('err2')
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      }
+    })
+  })
+}
+
+function endFunding(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.endFunding({from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function withdraw(projectAddress, owner, amount) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.withdraw(amount, {from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
@@ -163,14 +210,19 @@ module.exports = {
   getProjectStatusForAddress,
   getAllProjectsForFunder,
   investInProject,
-  createProject
+  createProject,
+  endFunding,
+  withdraw
 }
 
 // just for testing, has to removed afterwards
 // createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
 
-// getAllFundedStatus(config.accounts[9])
-//   .then(console.log)
+// getProjectAddressAtIndex(0)
+//   .then(proj => investInProject(proj, config.accounts[0], 400))
 
+// getProjectAddressAtIndex(0)
+// .then(p => endFunding(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4'))
 
-
+// getProjectAddressAtIndex(0)
+//   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
