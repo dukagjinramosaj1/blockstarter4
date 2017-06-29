@@ -100,30 +100,15 @@ function investInProject(projectAddress, backer, amount) {
 
 function createProject(creator, title, description, fundingGoal) {
   return new Promise((resolve, reject) => {
-    web3.eth.contract(config.abi.project).new(title, description, fundingGoal, {
+    blockstarter.create_project(title, description, fundingGoal, {
       from: creator,
-      data: config.bytecode.project,
       gas: 2100000
-    }, (err, contract) => {
+    }, (err) => {
       if (err) {
         reject(err)
       } else {
-        if (contract.address) {
-          // register in global contract
-          registerProject(contract.address, creator)
-            .then(() => resolve(contract.address))
-            .catch(reject)
-        }
+        resolve()
       }
-    })
-  })
-}
-
-function registerProject(address, creator) {
-  return new Promise((resolve, reject) => {
-    blockstarter.add_project(address, {from: creator, gas: 210000}, (err) => {
-      if (err) reject(err)
-      else resolve()
     })
   })
 }
@@ -202,13 +187,9 @@ function withdraw(projectAddress, owner, amount) {
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
-  getProjectAddressAtIndex,
-  getAllAddresses,
   getAllStatus,
   getAllFundedStatus,
   getAllOwnedStatus,
-  getProjectStatusForAddress,
-  getAllProjectsForFunder,
   investInProject,
   createProject,
   endFunding,
@@ -226,3 +207,5 @@ module.exports = {
 
 // getProjectAddressAtIndex(0)
 //   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
+
+getAllStatus().then(console.log)

@@ -6,27 +6,27 @@ contract Blockstarter {
     
     address[] projects;
     
-    function add_project(address project) {
-        projects.push(project);
+	  function remove_project(address project) {
+		    uint i = 0;
+		    bool found = false;
+		    for (; i < projects.length; i++) {
+			      if (found) {
+				        projects[i] = projects[i+1];
+			      } else {
+				        if (projects[i] == project) {
+					          found = true;
+					          delete projects[i];
+				        }
+			      }
+		    }
+		    if (found) {
+			      projects.length--;
+		    }
     }
-
-	function remove_project(address project) {
-		uint i = 0;
-		bool found = false;
-		for (; i < projects.length; i++) {
-			if (found) {
-				projects[i] = projects[i+1];
-			} else {
-				if (projects[i] == project) {
-					found = true;
-					delete projects[i];
-				}
-			}
-		}
-		if (found) {
-			projects.length--;
-		}
-	}
+    
+    function create_project(string _title, string _description, uint _goal) {
+        projects.push(new Project(msg.sender, _title, _description, _goal));
+    }
     
     function project_count() constant returns (uint) {
         return (projects.length);
@@ -54,8 +54,8 @@ contract Project {
     
     bool killed = false;
     
-    function Project(string _title, string _description, uint _funding_goal) {
-        owner = msg.sender;
+    function Project(address _owner, string _title, string _description, uint _funding_goal) {
+        owner = _owner;
         title = _title;
         description = _description;
         funding_goal = _funding_goal;
