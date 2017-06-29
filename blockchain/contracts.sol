@@ -7,7 +7,7 @@ contract Blockstarter {
     function Blockstarter() {
         owner = msg.sender;
     }
-    
+    address[] projectOwner;
     mapping ( address => address[]) userProjects;
 
     event ProjectCreated(address project, address owner);
@@ -29,11 +29,22 @@ contract Blockstarter {
         Project project = new Project(_owner, _title, _description, _fundingGoal);
         address projectAddress = address=(project);
         userProjects[_owner].push(projectAddress);
+        projectOwner.push(_owner);
         ProjectCreated(projectAddress, msg.sender);
+    }
+    function getProjectsFromOwner(address _owner) returns (address [] projects){
+        return userProjects[_owner];
+    }
+    function getProjects() returns (address projects){
+        address [] _projects;
+        for(uint i = 0; i < projectOwner.length(); i++){
+            _projects.push(getProjectsFromOwner(projectOwner[i]));
+        }
     }
 
     function kill(){
-        if(msg.sender == owner) selfdestruct(owner);
+        if(msg.sender != owner) throw;
+        selfdestruct(owner);
     }
 
     
