@@ -1,6 +1,25 @@
-<div id="promo">
+<div id="container">
     <div class="jumbotron">
-        <h3>Welcome to Blockstarter4.0</h3>
+        <h4>Welcome to Blockstarter4.0</h4>
+    </div>
+    <div class="row justify-content-end">
         <h5>Overall Projects {{project_count}}</h5>
     </div>
+    <div class="row">
+        {{#each data}}
+            <div class="col-sm-4">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text">{{description}}</p>
+                        <p class="card-subtitle">Stage: {{stage}}</p>
+                        <p class="card-subtitle">Current Funding: {{currentFunding}}</p>
+                        <p class="card-subtitle">Required Funding:{{fundingGoal}}</p>
+                        <p class="card-subtitle">Goal Reached: {{fundingGoalReached}}</p>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
 </div>
+
