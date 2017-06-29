@@ -12,7 +12,6 @@ module.exports.controller = function(app) {
         //blockstarter.getAllProjectsForFunder(req.session.address)
         blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
-                console.log(data);
                 res.render('investors',{data:data});
             }).catch((error) => {
             res.render('investors',{data:""});
