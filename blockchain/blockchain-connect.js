@@ -154,7 +154,6 @@ function getAllProjectsForFunder(funder) {
 
 function cancelAndRefundProject(projectAddress, owner) {
   return new Promise((resolve, reject) => {
-    console.log('try to delete project', projectAddress)
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
     project.kill((err) => {
       console.log('err1')
@@ -169,6 +168,19 @@ function cancelAndRefundProject(projectAddress, owner) {
             resolve()
           }
         })
+      }
+    })
+  })
+}
+
+function endFunding(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.endFunding({from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
       }
     })
   })
@@ -191,13 +203,13 @@ module.exports = {
 // just for testing, has to removed afterwards
 // createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
 
-cancelAndRefundProject('0x1c67ee3dbf81e7e4fda7a372237469330129fce3', config.accounts[4])
-  .catch(console.error)
-
-getAllAddresses().then(console.log)
-
 getAllStatus()
   .then(console.log)
 
+// getProjectAddressAtIndex(0)
+//   .then(proj => investInProject(proj, config.accounts[0], 400))
 
+// getProjectAddressAtIndex(0)
+// .then(p => endFunding(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4'))
 
+withdraw
