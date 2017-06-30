@@ -15,6 +15,7 @@ const data = {
     creator: undefined
   },
   project: {},
+  token: {},
   testProjects: [
     {
       title: "Project X",
