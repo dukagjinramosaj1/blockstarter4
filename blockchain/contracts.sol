@@ -70,8 +70,9 @@ contract Project {
         investors.push(msg.sender);
 		if (tokens[msg.sender] == 0) {
 			tokens[msg.sender] = new Token(msg.value, msg.sender);
-		} else {
-			token.add(msg.value);
+			// TODO fix if investor funds twice
+		// } else {
+			// token.add(msg.value);
 		}
     }
     
@@ -139,18 +140,19 @@ contract Project {
 		if (amount > this.balance) throw;
         owner.transfer(amount);
     }
+}
 
-	contract Token {
-		address public owner;
-		uint public value;
 
-		function Token(uint _value, address _owner) {
-			owner = _owner;
-			value = _value;
-		}
+contract Token {
+	address public owner;
+	uint public value;
 
-		function add(uint _value) {
-			value = value + _value;
-		}
+	function Token(uint _value, address _owner) {
+		owner = _owner;
+		value = _value;
+	}
+
+	function add(uint _value) {
+		value = value + _value;
 	}
 }
