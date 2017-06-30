@@ -1,24 +1,26 @@
 pragma solidity ^0.4.0;
 
 contract Blockstarter {
-
+    //ATTRIBUTES
     address owner;
+
+    //EVENTS
+    event ProjectCreated(address projectAddress, address projectOwner);
+
+    //STRUCTS
+
+    //MAPPINGS
+    address[] projectOwner;
+    mapping ( address => address[]) userProjects;
+    mapping(address=>address[]) investments;
+
 
     function Blockstarter() {
         owner = msg.sender;
     }
 
-    event ProjectCreated(address projectAddress, address projectOwner);
-
-    address[] projectOwner;
-    mapping ( address => address[]) userProjects;
-
-
-    function add_project(address project) {
-        projects.push(project);
-    }
-    
-    function project_count() constant returns (uint) {
+    //NONE-STATECHANGING FUNCTIONS
+     function project_count() constant returns (uint) {
         return (projects.length);
     }
     
@@ -26,6 +28,21 @@ contract Blockstarter {
         return projects[index];
     }
 
+    function getProjectsFromOwner(address _owner) constant returns (address [] projects){
+        return userProjects[_owner];
+    }
+    function getProjects() constant returns (address projects){
+        address [] _projects;
+        for(uint i = 0; i < projectOwner.length(); i++){
+            _projects.push(getProjectsFromOwner(projectOwner[i]));
+        }
+        return _projects;
+    }
+
+    //FUNCTIONS
+    function add_project(address project) {
+        projects.push(project);
+    }
     function createProject(string _title, string _description, uint _fundingGoal)returns (address projectAddress){
         address _owner = msg.sender;
         Project project = new Project(_owner, _title, _description, _fundingGoal);
@@ -34,16 +51,7 @@ contract Blockstarter {
         projectOwner.push(_owner);
         ProjectCreated(projectAddress, msg.sender);
     }
-    function getProjectsFromOwner(address _owner) returns (address [] projects){
-        return userProjects[_owner];
-    }
-    function getProjects() returns (address projects){
-        address [] _projects;
-        for(uint i = 0; i < projectOwner.length(); i++){
-            _projects.push(getProjectsFromOwner(projectOwner[i]));
-        }
-        return _projects;
-    }
+
 
     function kill(){
         if(msg.sender != owner) throw;
