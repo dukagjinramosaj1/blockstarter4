@@ -7,11 +7,13 @@ contract Blockstarter {
     function Blockstarter() {
         owner = msg.sender;
     }
+
+    event ProjectCreated(address projectAddress, address projectOwner);
+
     address[] projectOwner;
     mapping ( address => address[]) userProjects;
 
-    event ProjectCreated(address project, address owner);
-    
+
     function add_project(address project) {
         projects.push(project);
     }
@@ -40,6 +42,7 @@ contract Blockstarter {
         for(uint i = 0; i < projectOwner.length(); i++){
             _projects.push(getProjectsFromOwner(projectOwner[i]));
         }
+        return _projects;
     }
 
     function kill(){

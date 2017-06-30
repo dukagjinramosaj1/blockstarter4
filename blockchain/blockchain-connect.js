@@ -98,32 +98,42 @@ function investInProject(projectAddress, backer, amount) {
   })
 }
 
-function createProject(creator, title, description, fundingGoal) {
-  return new Promise((resolve, reject) => {
-    web3.eth.contract(config.abi.project).new(title, description, fundingGoal, {
-      from: creator,
-      data: config.bytecode.project,
-      gas: 2100000
-    }, (err, contract) => {
-      if (err) {
-        reject(err)
-      } else {
-        if (contract.address) {
-          // register in global contract
-          registerProject(contract.address, creator)
-            .then(() => resolve(contract.address))
-            .catch(reject)
+function handleProjectCreatedEvent(instance) {
+    instance.ContractCreated({
+        owner: config.account
+    }, (err, res) => {
+        if (!err) {
+            console.log(res)
+            var address = res.args.projectAddress
+            console.log("New Project created at: "+ address);
+        } else {
+            console.error(err)
         }
-      }
-    })
-  })
+    });
 }
-
-function registerProject(address, creator) {
-  return new Promise((resolve, reject) => {
-    blockstarter.add_project(address, {from: creator, gas: 210000}, (err) => {
-      if (err) reject(err)
-      else resolve()
+function createProject(creator, title, description, fundingGoal) {
+    return new Promise((resolve, reject) => {
+        var instance = blockstarter.at(config.blockstarter.address);
+        web3.eth.estimateGas({
+            data: config.bytecode
+        }, (err, gas) => {
+            instance.createProject(title, description, fundingGoal,
+        {
+            from: creator,
+                data: config.bytecode,
+            gas: gas
+        }, (err, contract) => {
+            if(err) {
+                console.error(err)
+            }
+            else {
+              if (contract.address) {
+                  handleProjectCreatedEvent()
+                    .then(() => resolve(contract.address))
+                    .catch(reject)
+              }
+            }
+        })
     })
   })
 }
@@ -151,6 +161,18 @@ function getAllProjectsForFunder(funder) {
         })
     })
 }
+//MetaMast / Mist integration
+var updateAccount = function(){
+    var newAccount = web3.eth.accounts[0]
+    if (newAccount !== config.account) {
+        var accountSwitched = (config.account !== null && config.account !== undefined);
+        config.account = newAccount;
+        if(accountSwitched){
+            //notify("<strong>Account has changed:</strong>", "Switched to account " + newAccount, "success")
+            console.log("Account has changed!")
+        }
+    }
+}
 
 // export all the methods that should be provided to express
 module.exports = {
@@ -163,7 +185,8 @@ module.exports = {
   getProjectStatusForAddress,
   getAllProjectsForFunder,
   investInProject,
-  createProject
+  createProject,
+  updateAccount,
 }
 
 // just for testing, has to removed afterwards
