@@ -20,13 +20,13 @@ module.exports.controller = function(app) {
 
     app.get('/myinvests/investInProject',function (req, res) {
         console.log(req.body.address)
-        var projectAddress = req.body.projectAddress;
         var backer = req.body.backer;
         var amount = req.body.amount;
         if(req.body.projectAddress != "" && req.body.backer != "" && req.body.amount != ""){
-            blockstarter.investInProject(req.session.address, projectAddress, backer, amount).then(function(data){console.log(data)});
+            blockstarter.investInProject(req.session.address, backer, amount)
+                .then(function(data){console.log(data)});
             console.log("Investment added to project");
-            res.redirect('/investedProjects');
+            res.redirect('/myinvests');
         }
     });
 

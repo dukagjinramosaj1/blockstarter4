@@ -21,6 +21,22 @@
                         {{else}}
                             <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
                         {{/if}}
+                        
+                        {{#if success}}
+                        <li class="list-group-item">
+                            <form method="post" action="/{{data.address}}/invest" class="form-horizontal" role="form">
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input id="address" type="number" class="form-control" name="ether" value="" placeholder="Ether Value">
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Invest</button>
+
+                            </form>
+
+                        </li>
+                    {{/if}}
                     </ul>
                 </a>
             </div>
