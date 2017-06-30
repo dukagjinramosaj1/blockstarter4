@@ -7,6 +7,7 @@ module.exports.controller = function(app) {
 
     /**
      * a home page route
+     * fetch all projects to display on homescreen
      */
     app.get('/', (req,res) => {
         const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus()]
@@ -15,6 +16,7 @@ module.exports.controller = function(app) {
         res.render('home', {project_count: result[0], data: result[1]});
         });
     });
+
     /**
      * About Login route
      */
@@ -23,6 +25,9 @@ module.exports.controller = function(app) {
         res.render('login')
     });
 
+    /**
+     * Login Post route
+     */
     app.post('/submit', function(req, res){
         if(req.body.address != "") {
             req.session.address = req.body.address;
@@ -32,8 +37,42 @@ module.exports.controller = function(app) {
         }
     });
 
+    /**
+     * Logout route & Destroying User's Session
+     */
     app.get('/logout',function(req,res){
         req.session.destroy();
         res.redirect('/');
+    });
+
+    /**
+     * Detail Page of Project(referenced from Home Page)
+     */
+    app.get('/:id/detail', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('detail',{data:data});
+        });
+
+    });
+
+    /**
+     * Detail Page of Project(referenced from MyProjects Page)
+     */
+    app.get('/myprojects/:id/view', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('view',{data:data});
+        });
+    });
+
+    /**
+     * Detail Page of Project(referenced from MyInvestments Page)
+     */
+    app.get('/myinvests/:id/investorsview', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('investorsviews',{data:data});
+        });
     });
 }

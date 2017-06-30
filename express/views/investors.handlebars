@@ -1,25 +1,31 @@
-<div class="page-header">
-    <h3>My Investments</h3>
-    </div>
-<div class="container">
-    {{#if data}}
-        <div class="row mt-3">
-            {{#each data}}
-                <div class="col-sm-4">
-                    <div class="card" style="width: 20rem;">
-                        <div class="card-block">
-                            <h4 class="card-title">{{title}}</h4>
-                            <p class="card-text">{{description}}</p>
-                            <p class="card-subtitle">Current Funding: {{currentFunding}}</p>
-                            <p class="card-button">
-                                <a href="/myinvests/investInProject" class="btn btn-primary btn-sm pull-right" role="button"><span class="fa fa-edit"></span> Invest in Project</a>
-                            </p>
-                        </div>
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">Home</a>
+    <span class="breadcrumb-item active">My Investments</span>
+</nav>
+
+{{#if data}}
+    <div class="row mt-3">
+        {{#each data}}
+            <div class="col-sm-4">
+                <a class="card mt-3" style="width: 20rem;color: #333;text-decoration : none" href="/myinvests/{{address}}/investorsview">
+                    <div class="card-block">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text">{{description}}</p>
                     </div>
-                </div>
-            {{/each}}
-        </div>
-    {{else}}
-        <p class="alert alert-warning">You have not yet invested in any project.</p>
-    {{/if}}
-</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{stage}}</li>
+                        <li class="list-group-item">Current Funding:&nbsp;{{currentFunding}}</li>
+                        <li class="list-group-item">Required Funding:&nbsp;{{fundingGoal}}</li>
+                        {{#if fundingGoalReachd}}
+                            <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
+                        {{else}}
+                            <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
+                        {{/if}}
+                    </ul>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    <p class="alert alert-warning">You have not yet invested in any project.</p>
+{{/if}}

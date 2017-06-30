@@ -1,6 +1,7 @@
 pragma solidity ^0.4.0;
 
 contract Blockstarter {
+
     //ATTRIBUTES
     address owner;
 
@@ -17,7 +18,9 @@ contract Blockstarter {
 
     function Blockstarter() {
         owner = msg.sender;
-    }
+
+    
+
 
     //NONE-STATECHANGING FUNCTIONS
      function project_count() constant returns (uint) {
@@ -63,7 +66,7 @@ contract Blockstarter {
 
 contract Project { 
     
-    enum Stage { Funding, Ended }
+    enum Stage { Funding, EndedSuccess, EndedFail }
 
     address owner;
     string public title;
@@ -85,7 +88,7 @@ contract Project {
     }
 
     function invest() payable {
-        if (stage == Stage.Ended) throw;
+        if (stage != Stage.Funding) throw;
         if (msg.value == 0) throw;
         investments[msg.sender] += msg.value;
         investors.push(msg.sender);
@@ -93,7 +96,12 @@ contract Project {
     
     function endFunding() {
         if (msg.sender != owner) throw;
-        stage = Stage.Ended;
+		if (this.balance >= funding_goal) {
+			stage = Stage.EndedSuccess;
+		} else {
+			stage = Stage.EndedFail;
+			kill();
+		}
     }
     
     function status() constant
@@ -107,12 +115,31 @@ contract Project {
         reached_goal = current_funding_amount >= funding_goal;
         if (stage == Stage.Funding) {
             funding_stage = "Funding";
-        } else if (stage == Stage.Ended) {
-            funding_stage = "Ended";
+        } else if (stage == Stage.EndedSuccess) {
+            funding_stage = "Ended successfully";
+        } else if (stage == Stage.EndedFail) {
+            funding_stage = "Ended without success";
         }
         project_owner = owner;
         return (project_owner, project_title, project_description, funding_stage,
             current_funding_amount, final_funding_goal, reached_goal);
+    }
+    function remove_project(address project) {
+        uint i = 0;
+        bool found = false;
+        for (; i < projects.length; i++) {
+            if (found) {
+                projects[i] = projects[i+1];
+            } else {
+                if (projects[i] == project) {
+                    found = true;
+                    delete projects[i];
+                }
+            }
+        }
+        if (found) {
+            projects.length--;
+        }
     }
     
     function kill() {
@@ -135,5 +162,13 @@ contract Project {
         }
       }
       return false;
+    }
+    
+    function withdraw(uint amount) {
+		if (stage != Stage.EndedSuccess) throw;
+		if (msg.sender != owner) throw;
+		if (amount == 0) return;
+		if (amount > this.balance) throw;
+        owner.transfer(amount);
     }
 }
