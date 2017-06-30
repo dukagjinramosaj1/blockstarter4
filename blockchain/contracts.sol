@@ -51,6 +51,7 @@ contract Project {
     
     mapping (address => uint) investments;
     address[] investors;
+	mapping (address => address) tokens;
     
     bool killed = false;
     
@@ -67,6 +68,11 @@ contract Project {
         if (msg.value == 0) throw;
         investments[msg.sender] += msg.value;
         investors.push(msg.sender);
+		if (tokens[msg.sender] == 0) {
+			tokens[msg.sender] = new Token(msg.value, msg.sender);
+		} else {
+			token.add(msg.value);
+		}
     }
     
     function endFunding() {
@@ -78,6 +84,10 @@ contract Project {
 			kill();
 		}
     }
+
+	function getToken(address funder) returns (address) {
+		return(tokens[funder]);
+	}
     
     function status() constant
         returns (address project_owner, string project_title, string project_description, string funding_stage,
@@ -129,4 +139,18 @@ contract Project {
 		if (amount > this.balance) throw;
         owner.transfer(amount);
     }
+
+	contract Token {
+		address public owner;
+		uint public value;
+
+		function Token(uint _value, address _owner) {
+			owner = _owner;
+			value = _value;
+		}
+
+		function add(uint _value) {
+			value = value + _value;
+		}
+	}
 }

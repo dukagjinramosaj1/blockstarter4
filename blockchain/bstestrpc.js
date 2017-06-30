@@ -57,6 +57,7 @@ function compileContract(data) {
     data.blockstarter.bytecode = compiled.contracts[':Blockstarter'].bytecode
     data.project.abi = JSON.parse(compiled.contracts[':Project'].interface)
     data.project.bytecode = compiled.contracts[':Project'].bytecode
+    data.token.abi = JSON.parse(compiled.contracts[':Token'].interface)
     resolve(data)
   })
 }

@@ -113,6 +113,26 @@ function createProject(creator, title, description, fundingGoal) {
   })
 }
 
+function getTokenForProject(projectAddress, funder) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.getToken(funder, ((err, tokenAddress) => {
+      if (err) {
+        reject(err)
+      } else {
+        config.abi.token.at(tokenAddress).value((err, tokenValue) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(tokenValue)
+          }
+        })
+      }
+    }))
+  })
+}
+
+
 function isFunderInProject(funder, projectAddress) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
@@ -140,14 +160,12 @@ function getAllProjectsForFunder(funder) {
 function cancelAndRefundProject(projectAddress, owner) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.kill((err) => {
-      console.log('err1')
+    project.kill({from: owner, gas: 210000}, (err) => {
       if (err) {
         reject(err)
       } else {
         blockstarter.remove_project(projectAddress, {from: owner, gas: 210000}, (err) => {
           if (err) {
-            console.log('err2')
             reject(err)
           } else {
             resolve()
@@ -210,4 +228,5 @@ module.exports = {
 // getProjectAddressAtIndex(0)
 //   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
 
-// getAllStatus().then(console.log)
+// getAllStatus().then(console.log).catch(console.error)
+// cancelAndRefundProject('0x13d12a8668eff2d95bc231978cad1f16ba1b7fd1', '0x4c5cda45cbd0b5abbae84c4d77bfa5a246aa9150').catch(console.error)
