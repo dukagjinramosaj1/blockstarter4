@@ -12,9 +12,10 @@ module.exports.controller = function(app) {
     app.get('/', (req,res) => {
         const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus()]
         Promise.all(promises)
-        .then(result => {
-        res.render('home', {project_count: result[0], data: result[1]});
-        });
+          .then(result => {
+            res.render('home', {project_count: result[0], data: result[1]});
+          })
+          .catch(() => res.render('error', { errorMsg: 'The blockchain seems to be not available' }))
     });
 
     /**

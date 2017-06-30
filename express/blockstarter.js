@@ -51,5 +51,5 @@ fs.readdirSync('./controllers').forEach(function (file) {
 });
 
 app.listen(app.get('port'), function(){
-    console.log('Express started on http://localhost:' + app.get('port') + ' press Ctrl-C to terminate');
+    console.log('Blockstarter Platform started on http://localhost:' + app.get('port') + ' press Ctrl-C to terminate');
 });

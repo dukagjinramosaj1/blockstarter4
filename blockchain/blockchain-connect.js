@@ -190,6 +190,7 @@ module.exports = {
   getAllStatus,
   getAllFundedStatus,
   getAllOwnedStatus,
+  getProjectStatusForAddress,
   investInProject,
   createProject,
   endFunding,
@@ -208,4 +209,4 @@ module.exports = {
 // getProjectAddressAtIndex(0)
 //   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
 
-getAllStatus().then(console.log)
+// getAllStatus().then(console.log)
