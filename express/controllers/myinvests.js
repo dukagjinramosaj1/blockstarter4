@@ -9,8 +9,8 @@ module.exports.controller = function(app) {
      */
 
     app.get('/myinvests', function(req, res) {
-        //blockstarter.getAllProjectsForFunder(req.session.address)
-        blockstarter.getAllStatus(req.session.address)
+        blockstarter.getAllFundedStatus(req.session.address)
+        //blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
                 res.render('investors',{data:data});
             }).catch((error) => {

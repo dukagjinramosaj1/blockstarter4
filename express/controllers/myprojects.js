@@ -12,8 +12,8 @@ module.exports.controller = function(app) {
      * MyProject Page Fetch all Projects of the logged In User.
      */
     app.get('/myprojects', function(req, res) {
-        // blockstarter.getAllOwnedStatus(req.session.address)
-        blockstarter.getAllStatus(req.session.address)
+        blockstarter.getAllOwnedStatus(req.session.address)
+        // blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
                 res.render('listProjects',{data:data});
             }).catch((error) => {
@@ -37,8 +37,10 @@ module.exports.controller = function(app) {
         var fundinggoal = req.body.fundinggoal;
 
         if(req.body.title != "" && req.body.description != "" && req.body.fundinggoal != ""){
-            blockstarter.createProject(req.session.address, title, description, fundinggoal).then(function(data){console.log(data)});
-            res.redirect('/myprojects');
+            blockstarter.createProject(req.session.address, title, description, fundinggoal).then(function(data){
+                res.redirect('/myprojects');
+            });
+
         }
     });
 }
