@@ -76,4 +76,14 @@ module.exports.controller = function(app) {
             res.render('investorsviews',{data:data});
         });
     });
+
+    app.post('/:id/invest', function(req, res) {
+        var address = req.params.id;
+        var value = req.body.ether;
+        var owner = req.session.address;
+        blockstarter.investInProject(address,owner,value).then(function(data){
+            console.log(data);
+            res.redirect('/'+address+"/detail");
+        }).catch(console.log);
+    });
 }
