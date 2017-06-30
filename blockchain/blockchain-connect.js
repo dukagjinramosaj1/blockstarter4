@@ -194,7 +194,8 @@ module.exports = {
   investInProject,
   createProject,
   endFunding,
-  withdraw
+  withdraw,
+  cancelAndRefundProject
 }
 
 // just for testing, has to removed afterwards

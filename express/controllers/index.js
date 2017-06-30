@@ -86,4 +86,13 @@ module.exports.controller = function(app) {
             res.redirect('/'+address+"/detail");
         }).catch(console.log);
     });
+
+    app.get('/myprojects/:id/cancel', function(req, res) {
+        var address = req.params.id;
+        var owner = req.session.address;
+        blockstarter.cancelAndRefundProject(address,owner).then(function(data){
+            console.log(data);
+            res.redirect('/myprojects');
+        }).catch(console.log);
+    });
 }
