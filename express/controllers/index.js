@@ -13,7 +13,10 @@ module.exports.controller = function(app) {
         const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus()]
         Promise.all(promises)
           .then(result => {
-            res.render('home', {project_count: result[0], data: result[1]});
+            const project_count = result[0]
+            let data = result[1]
+            data = data.filter(project => project.stage === 'Funding');
+            res.render('home', {project_count, data});
           })
           .catch(() => res.render('error', { errorMsg: 'The blockchain seems to be not available' }))
     });
@@ -63,6 +66,8 @@ module.exports.controller = function(app) {
     app.get('/myprojects/:id/view', function(req, res) {
         var address = req.params.id;
         blockstarter.getProjectStatusForAddress(address).then(function(data){
+            data.running = data.stage === 'Funding';
+            data.runningAndSuccessful = data.fundingGoalReached && data.running;
             res.render('view',{data:data});
         });
     });
@@ -95,4 +100,14 @@ module.exports.controller = function(app) {
             res.redirect('/myprojects');
         }).catch(console.log);
     });
+
+
+    app.get('/myprojects/:address/end', function(req, res) {
+        var address = req.params.address;
+        var owner = req.session.address;
+        blockstarter.endFunding(address,owner).then(function (data) {
+            res.redirect('/myprojects/' + address + '/view');
+        })
+    });
+
 }

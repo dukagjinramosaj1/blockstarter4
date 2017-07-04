@@ -12,18 +12,21 @@
                     <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{data.stage}}</li>
                     <li class="list-group-item">Current Funding:&nbsp;{{data.currentFunding}}</li>
                     <li class="list-group-item">Required Funding:&nbsp;{{data.fundingGoal}}</li>
-                    {{#if data.fundingGoalReachd}}
+                    {{#if data.fundingGoalReached}}
                         <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
                     {{else}}
                         <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
                     {{/if}}
-                    <li class="list-group-item">
-                        <a class="btn btn-primary btn-block" href="/myprojects/{{data.address}}/token" role="button">Get Token</a>
-                    </li>
-
+                    {{#if data.running}}
                     <li class="list-group-item">
                         <a class="btn btn-danger btn-block" href="/myprojects/{{data.address}}/cancel" role="button">Cancel & Refund</a>
                     </li>
+                    {{/if}}
+                    {{#if data.runningAndSuccessful}}
+                    <li class="list-group-item">
+                        <a class="btn btn-primary btn-block" href="/myprojects/{{data.address}}/end" role="button">End Funding</a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
