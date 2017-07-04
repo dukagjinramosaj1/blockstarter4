@@ -87,7 +87,7 @@ function investInProject(projectAddress, backer, amount) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
     project.invest.sendTransaction(
-      {value:amount, gas:210000, from: backer},
+      {value:amount, gas:2100000, from: backer},
       (err, result) => {
         if (err) {
           reject(err)
