@@ -4,10 +4,7 @@
 var blockstarter = require('../../blockchain/blockchain-connect');
 module.exports.controller = function(app) {
 
-    /**
-     * a home page route
-     */
-
+    // My Investments Page: Fetch all Projects in which the User has invested.
     app.get('/myinvests', function(req, res) {
         blockstarter.getAllFundedStatus(req.session.address)
         //blockstarter.getAllStatus(req.session.address)
@@ -18,6 +15,7 @@ module.exports.controller = function(app) {
         });
     });
 
+    // Invest in a project.
     app.get('/myinvests/investInProject',function (req, res) {
         console.log(req.body.address)
         var backer = req.body.backer;
@@ -30,4 +28,11 @@ module.exports.controller = function(app) {
         }
     });
 
+    // Detail Page of Project(referenced from MyInvestments Page)
+    app.get('/myinvests/:id/investorsview', function(req, res) {
+        var address = req.params.id;
+        blockstarter.getProjectStatusForAddress(address).then(function(data){
+            res.render('investorsviews',{data:data});
+        });
+    });
 }
