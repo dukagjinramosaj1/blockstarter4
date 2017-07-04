@@ -4,7 +4,8 @@
   "description": "",
   "main": "blockchain-setup.js",
   "scripts": {
-    "testserver": "node blockchain-setup.js",
+    "testserver": "node bstestrpc.js",
+    "start": "npm run testserver",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
