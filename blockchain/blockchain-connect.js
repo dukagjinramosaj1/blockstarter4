@@ -53,7 +53,10 @@ function getProjectStatusForAddress(address) {
           stage: result[3],
           currentFunding: result[4].c[0],
           fundingGoal: result[5].c[0],
-          fundingGoalReached: result[6]
+          fundingGoalReached: result[6],
+          poll: result[7],
+          proPoll: result[8].c[0],
+          contraPoll: result[9].c[0]
         })
       }
     })
@@ -79,7 +82,7 @@ function getAllFundedStatus(funder) {
 
 function getAllOwnedStatus(owner) {
   return getAllStatus()
-    .then(projects => projects.filter(projects.owner === owner))
+    .then(projects => projects.filter(p => p.owner === owner))
 }
 
 //Invest in a project - unsigned transaction
@@ -87,7 +90,7 @@ function investInProject(projectAddress, backer, amount) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
     project.invest.sendTransaction(
-      {value:amount, gas:210000, from: backer},
+      {value:amount, gas:2100000, from: backer},
       (err, result) => {
         if (err) {
           reject(err)
@@ -100,33 +103,38 @@ function investInProject(projectAddress, backer, amount) {
 
 function createProject(creator, title, description, fundingGoal) {
   return new Promise((resolve, reject) => {
-    web3.eth.contract(config.abi.project).new(title, description, fundingGoal, {
+    blockstarter.create_project(title, description, fundingGoal, {
       from: creator,
-      data: config.bytecode.project,
       gas: 2100000
-    }, (err, contract) => {
+    }, (err) => {
       if (err) {
         reject(err)
       } else {
-        if (contract.address) {
-          // register in global contract
-          registerProject(contract.address, creator)
-            .then(() => resolve(contract.address))
-            .catch(reject)
-        }
+        resolve()
       }
     })
   })
 }
 
-function registerProject(address, creator) {
+function getTokenForProject(projectAddress, funder) {
   return new Promise((resolve, reject) => {
-    blockstarter.add_project(address, {from: creator, gas: 210000}, (err) => {
-      if (err) reject(err)
-      else resolve()
-    })
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.getToken(funder, ((err, tokenAddress) => {
+      if (err) {
+        reject(err)
+      } else {
+        config.abi.token.at(tokenAddress).value((err, tokenValue) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(tokenValue)
+          }
+        })
+      }
+    }))
   })
 }
+
 
 function isFunderInProject(funder, projectAddress) {
   return new Promise((resolve, reject) => {
@@ -152,25 +160,91 @@ function getAllProjectsForFunder(funder) {
     })
 }
 
+function cancelAndRefundProject(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.kill({from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        blockstarter.remove_project(projectAddress, {from: owner, gas: 210000}, (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      }
+    })
+  })
+}
+
+function endFunding(projectAddress, owner) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.endFunding({from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function startPoll(projectAddress, owner, poll) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    console.log('start poll', poll)
+    project.start_poll(poll, {from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function votePoll(projectAddress, voter, vote) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.vote_poll(vote, {from: voter, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
-  getProjectAddressAtIndex,
-  getAllAddresses,
   getAllStatus,
   getAllFundedStatus,
   getAllOwnedStatus,
   getProjectStatusForAddress,
-  getAllProjectsForFunder,
   investInProject,
-  createProject
+  createProject,
+  endFunding,
+  cancelAndRefundProject,
+  startPoll,
+  votePoll
 }
 
 // just for testing, has to removed afterwards
 // createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
 
-// getAllFundedStatus(config.accounts[9])
-//   .then(console.log)
+// getProjectAddressAtIndex(0)
+//   .then(proj => investInProject(proj, config.accounts[0], 400))
 
+// getProjectAddressAtIndex(0)
+// .then(p => endFunding(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4'))
 
+// getProjectAddressAtIndex(0)
+//   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
 
+// getAllStatus().then(console.log).catch(console.error)
+// cancelAndRefundProject('0x13d12a8668eff2d95bc231978cad1f16ba1b7fd1', '0x4c5cda45cbd0b5abbae84c4d77bfa5a246aa9150').catch(console.error)

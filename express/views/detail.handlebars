@@ -1,0 +1,51 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">Home</a>
+    <span class="breadcrumb-item active">{{data.title}}</span>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-3 push-md-9 bd-sidebar">
+            <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{data.stage}}</li>
+                    <li class="list-group-item">Current Funding:&nbsp;{{data.currentFunding}}</li>
+                    <li class="list-group-item">Required Funding:&nbsp;{{data.fundingGoal}}</li>
+                    {{#if data.fundingGoalReached}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
+                    {{else}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
+                    {{/if}}
+
+                    {{#if success}}
+                        <li class="list-group-item">
+                            <form method="post" action="/{{data.address}}/invest" class="form-horizontal" role="form">
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input id="address" type="number" min="0" class="form-control" name="ether" value="" placeholder="Ether Value">
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Invest</button>
+
+                            </form>
+                        </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 pull-md-3 bd-content">
+            <h4  class="display-4">{{data.title}}</h4>
+            <br/>
+            <p class="lead">{{data.description}}</p>
+			{{#if data.poll}}
+				<br/>
+				<p class="lead"><strong>Poll: </strong>{{data.poll}}</p>
+				<div class="bar">
+					<div class="yes" style="width: {{data.pollyesperc}}%"></div>
+					<div class="no" style="width: {{data.pollnoperc}}%"></div>
+				</div>
+			{{/if}}
+        </div>
+    </div>
+</div>

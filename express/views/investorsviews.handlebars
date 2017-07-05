@@ -1,0 +1,40 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">Home</a>
+    <a class="breadcrumb-item" href="/myinvests">My Investments</a>
+    <span class="breadcrumb-item active">{{data.title}}</span>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-3 push-md-9 bd-sidebar">
+            <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{data.stage}}</li>
+                    <li class="list-group-item">Current Funding:&nbsp;{{data.currentFunding}}</li>
+                    <li class="list-group-item">Required Funding:&nbsp;{{data.fundingGoal}}</li>
+                    {{#if data.fundingGoalReached}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
+                    {{else}}
+                        <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
+                    {{/if}}
+                    <li class="list-group-item">Token:&nbsp;{{token}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 pull-md-3 bd-content">
+            <h4  class="display-4">{{data.title}}</h4>
+            <br/>
+            <p class="lead">{{data.description}}</p>
+			{{#if data.poll}}
+				<br/>
+				<p class="lead"><strong>Poll: </strong>{{data.poll}}</p>
+				<div class="bar">
+					<div class="yes" style="width: {{data.pollyesperc}}%"></div>
+					<div class="no" style="width: {{data.pollnoperc}}%"></div>
+				</div>
+				<br/>
+				<a class="btn btn-primary btn-block" href="/{{data.address}}/poll/yes" role="button">Yes</a> <a class="btn btn-danger btn-block" href="/{{data.address}}/poll/no" role="button">No</a>
+			{{/if}}
+        </div>
+    </div>
+</div>

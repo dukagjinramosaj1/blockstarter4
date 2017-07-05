@@ -1,3 +1,47 @@
-<div class="page-header">
-<h3>List of investors and button to check the projects invested</h3>
-</div>
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">Home</a>
+    <span class="breadcrumb-item active">My Investments</span>
+</nav>
+
+{{#if data}}
+    <div class="row mt-3">
+        {{#each data}}
+            <div class="col-sm-4">
+                <a class="card mt-3" style="width: 20rem;color: #333;text-decoration : none" href="/myinvests/{{address}}/investorsview">
+                    <div class="card-block">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text">{{description}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Stage &nbsp;<span class="badge badge-primary">{{stage}}</li>
+                        <li class="list-group-item">Current Funding:&nbsp;{{currentFunding}}</li>
+                        <li class="list-group-item">Required Funding:&nbsp;{{fundingGoal}}</li>
+                        {{#if fundingGoalReached}}
+                            <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">SUCCESSFULLY</span></li>
+                        {{else}}
+                            <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
+                        {{/if}}
+                        
+                        {{#if success}}
+                        <li class="list-group-item">
+                            <form method="post" action="/{{data.address}}/invest" class="form-horizontal" role="form">
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input id="address" type="number" min="0" class="form-control" name="ether" value="" placeholder="Ether Value">
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Invest</button>
+
+                            </form>
+
+                        </li>
+                    {{/if}}
+                    </ul>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    <p class="alert alert-warning">You have not yet invested in any project.</p>
+{{/if}}

@@ -15,6 +15,7 @@ const data = {
     creator: undefined
   },
   project: {},
+  token: {},
   testProjects: [
     {
       title: "Project X",
@@ -48,11 +49,16 @@ function compileContract(data) {
 
     console.log('-- compile contract --')
     const compiled = solc.compile(contractSource.toString())
+    if (!compiled.contracts) {
+      console.log('error when compiling')
+      console.log(compiled)
+      return
+    }
     data.blockstarter.abi = JSON.parse(compiled.contracts[':Blockstarter'].interface)
     data.blockstarter.bytecode = compiled.contracts[':Blockstarter'].bytecode
     data.project.abi = JSON.parse(compiled.contracts[':Project'].interface)
     data.project.bytecode = compiled.contracts[':Project'].bytecode
-    console.log(compiled)
+    data.token.abi = JSON.parse(compiled.contracts[':Token'].interface)
     resolve(data)
   })
 }
@@ -84,7 +90,7 @@ function createBlockstarter(data) {
     const contract = data.web3.eth.contract(data.blockstarter.abi).new({
       from: data.blockstarter.creator,
       data: data.blockstarter.bytecode,
-      gas: 2100000
+      gas: 3900000
     }, (err, contract) => {
       if (err) {
         console.error('could not create blockstarter contract')
@@ -102,42 +108,27 @@ function createBlockstarter(data) {
 }
 
 function createDummyData(data) {
+  console.log('-- create test projects --')
+  return Promise.all(data.testProjects.map(p => createProject(data, p)))
+    .then(() => data)
+}
+
+function createProject(data, project) {
+  const randomInt = Math.floor((Math.random() * data.accounts.length))
   return new Promise((resolve, reject) => {
-    const blockstarter = data.blockstarter.contract
-    console.log('-- create test projects --')
-    projectsCreated = 0
-    data.testProjects.forEach(p => {
-      createProject(data, p, (project, creator) => {
-        blockstarter.add_project(project, {from: creator, gas: 2100000}, () => {
-          p.address = project
-          projectsCreated++
-          if (projectsCreated === data.testProjects.length) {
-            resolve(data)
-          }
-        })
-      })
+    data.blockstarter.contract.create_project(project.title, project.description, project.fundingGoal, {
+      from: data.accounts[randomInt],
+      gas: 2100000
+    }, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
     })
   })
 }
-
-function createProject(data, project, next) {
-  const randomInt = Math.floor((Math.random() * data.accounts.length))
-  const projectContract = data.web3.eth.contract(data.project.abi).new(project.title, project.description, project.fundingGoal, {
-    from: data.accounts[randomInt],
-    data: data.project.bytecode,
-    gas: 2100000
-  }, (err, contract) => {
-    if (err) {
-      console.error('could not create project contract')
-    } else {
-      if (contract.address) {
-        // TODO do dummy transactions at initializing
-        next(contract.address, data.accounts[randomInt])
-      }
-    }
-  })
-}
-
+  
 function createConfig(data) {
   return new Promise((resolve, reject) => {
     const writeData = {
