@@ -80,6 +80,7 @@ contract Project {
         if (msg.sender != owner) throw;
 		if (this.balance >= funding_goal) {
 			stage = Stage.EndedSuccess;
+			owner.transfer(this.balance);
 		} else {
 			stage = Stage.EndedFail;
 			kill();
@@ -131,14 +132,6 @@ contract Project {
         }
       }
       return false;
-    }
-    
-    function withdraw(uint amount) {
-		if (stage != Stage.EndedSuccess) throw;
-		if (msg.sender != owner) throw;
-		if (amount == 0) return;
-		if (amount > this.balance) throw;
-        owner.transfer(amount);
     }
 }
 
