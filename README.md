@@ -9,26 +9,34 @@ Created as project in the course **Advanced Enterprise Computing SS2017** at TU 
 |-----
 
 ## Development
-### Project Structure
-|`TODO`
-|-----
-* Blockchain (Truffle ?)
-* Backend (Express? Koa?)
-* Frontend (? React? Vue?)
-* Documentation (markdown?)
-* Report (LaTeX?)
-* Presentation (Powerpoint? Google presentation?)
+### Project Structure and Technologies
+* Blockchain using `testrpc`
+* WebUI and Backend: Express (using Handlebars as Templating-Engine)
+* Documentation: markdown (this very file)
+* Report: LaTeX
+* Presentation: Google presentation
 
 ### Get Started
+|Do not forget to run `npm i` before you `npm start`
+
 Run the TestRPC from the blockchain folder (after `npm install`)
 ```
-npm run testserver
+cd blockchain
+npm start
 ```
-After that the express server can connect to the blockchain
+A script will be started which does the following steps:
 
-## Organisation
+* Compile the contracts
+* Initialize testrpc
+* Create the `global` blockstarter contract, our `database`
+* Create two dummy test projects for testing purposes
+* Create a json file named `blockstarterData.json` which contains all necessary information for express to start (like abis and the global contract address)
 
-An [agenda for the first meeting](agenda-kick-off.md) was created to get quickly into the project.
+After that the express server can be started and connected to the blockchain
+```
+cd express
+npm start
+```
 
 ### Team
 This project is implemented by **group D**, which consists of the following team members:
@@ -55,5 +63,5 @@ This project is implemented by **group D**, which consists of the following team
 * Source Code and Documentation [8]
 * ~ 15 Pages PDF Report [8]
 * Participation in Update Meetings and Presentation [4]  
-*As the supervisors mentioned in the kick-off everyone should be an active part of the group and participate in discussions during the update meetings. These meetings on Fridays are mandatory. As the 10-minute presentation cannot be held by everyone in the team, members who were not as active before can score by presenting. The supervisors would give us hints, who could hold the presentation.*
+*As the supervisors mentioned in the kick-off everyone should be an active part of the group and participate in discussions during the update meetings. These meetings on Fridays are mandatory.*
 
