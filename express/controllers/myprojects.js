@@ -21,6 +21,8 @@ module.exports.controller = function(app) {
         blockstarter.getProjectStatusForAddress(address).then(function(data){
             data.running = data.stage === 'Funding';
             data.runningAndSuccessful = data.fundingGoalReached && data.running;
+            data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
+            data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
             res.render('view',{data:data});
         });
     });

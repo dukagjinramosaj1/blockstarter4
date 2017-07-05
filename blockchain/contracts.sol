@@ -42,16 +42,22 @@ contract Blockstarter {
 contract Project { 
     
     enum Stage { Funding, EndedSuccess, EndedFail }
+    enum Vote { Undecided, Yes, No }
 
     address owner;
     string public title;
     string public description;
     uint public funding_goal;
     Stage stage;
-    
+    string poll;
+
     mapping (address => uint) investments;
     address[] investors;
 	mapping (address => address) tokens;
+
+	address[] voters;
+	mapping (address => bool) votes;
+	uint numVoters = 0;
     
     bool killed = false;
     
@@ -61,6 +67,7 @@ contract Project {
         description = _description;
         funding_goal = _funding_goal;
         stage = Stage.Funding;
+        poll = "";
     }
 
     function invest() payable {
@@ -75,6 +82,35 @@ contract Project {
 			// token.add(msg.value);
 		}
     }
+
+	function start_poll(string _poll) {
+		if (msg.sender != owner) throw;
+		poll = _poll;
+		numVoters = 0;
+	}
+
+	function vote_poll(bool vote_value) {
+		if (investments[msg.sender] == 0) throw;
+
+		bool alreadyVoted = false;
+		// check if voter already voted
+        for (uint i=0; i < voters.length; i++){
+			if (voters[i] == msg.sender) {
+				alreadyVoted = true;
+			}
+		}
+		if (!alreadyVoted) {
+			// add new voter to voters
+			if (numVoters == voters.length) {
+				voters.length +=1;
+			}
+			voters[numVoters++] = msg.sender;
+		}
+		
+		// add or override vote
+		votes[msg.sender] = vote_value;
+		
+	}
     
     function endFunding() {
         if (msg.sender != owner) throw;
@@ -92,8 +128,7 @@ contract Project {
 	}
     
     function status() constant
-        returns (address project_owner, string project_title, string project_description, string funding_stage,
-        uint current_funding_amount, uint final_funding_goal, bool reached_goal)
+        returns (address project_owner, string project_title, string project_description, string funding_stage, uint current_funding_amount, uint final_funding_goal, bool reached_goal, string current_poll, uint pro_poll, uint contra_poll)
     {
         current_funding_amount = this.balance;
         project_title = title;
@@ -108,8 +143,20 @@ contract Project {
             funding_stage = "Ended without success";
         }
         project_owner = owner;
-        return (project_owner, project_title, project_description, funding_stage,
-            current_funding_amount, final_funding_goal, reached_goal);
+		current_poll = poll;
+
+		// count votes
+		for (uint i = 0; i < numVoters; i++) {
+			if (votes[voters[i]]) {
+				// sum up to pro votes
+				pro_poll += investments[voters[i]];
+			} else {
+				// sum up to contra votes
+				contra_poll += investments[voters[i]];
+			}
+		}
+		
+        return (project_owner, project_title, project_description, funding_stage, current_funding_amount, final_funding_goal, reached_goal, current_poll, pro_poll, contra_poll);
     }
     
     function kill() {

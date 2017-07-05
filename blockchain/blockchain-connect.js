@@ -53,7 +53,10 @@ function getProjectStatusForAddress(address) {
           stage: result[3],
           currentFunding: result[4].c[0],
           fundingGoal: result[5].c[0],
-          fundingGoalReached: result[6]
+          fundingGoalReached: result[6],
+          poll: result[7],
+          proPoll: result[8].c[0],
+          contraPoll: result[9].c[0]
         })
       }
     })
@@ -189,10 +192,24 @@ function endFunding(projectAddress, owner) {
   })
 }
 
-function withdraw(projectAddress, owner, amount) {
+function startPoll(projectAddress, owner, poll) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.withdraw(amount, {from: owner, gas: 210000}, (err) => {
+    console.log('start poll', poll)
+    project.start_poll(poll, {from: owner, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function votePoll(projectAddress, voter, vote) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.vote_poll(vote, {from: voter, gas: 210000}, (err) => {
       if (err) {
         reject(err)
       } else {
@@ -212,8 +229,9 @@ module.exports = {
   investInProject,
   createProject,
   endFunding,
-  withdraw,
-  cancelAndRefundProject
+  cancelAndRefundProject,
+  startPoll,
+  votePoll
 }
 
 // just for testing, has to removed afterwards

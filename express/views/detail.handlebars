@@ -29,7 +29,6 @@
                                 <button type="submit" class="btn btn-success">Invest</button>
 
                             </form>
-
                         </li>
                     {{/if}}
                 </ul>
@@ -39,6 +38,14 @@
             <h4  class="display-4">{{data.title}}</h4>
             <br/>
             <p class="lead">{{data.description}}</p>
+			{{#if data.poll}}
+				<br/>
+				<p class="lead"><strong>Poll: </strong>{{data.poll}}</p>
+				<div class="bar">
+					<div class="yes" style="width: {{data.pollyesperc}}%"></div>
+					<div class="no" style="width: {{data.pollnoperc}}%"></div>
+				</div>
+			{{/if}}
         </div>
     </div>
 </div>

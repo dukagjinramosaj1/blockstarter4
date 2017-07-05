@@ -13,7 +13,10 @@ module.exports.controller = function(app) {
           .then(result => {
             const project_count = result[0]
             let data = result[1]
-            data = data.filter(project => project.stage === 'Funding');
+
+            // only display funding projects
+            data = data.filter(project => project.stage === 'Funding')
+
             res.render('home', {project_count, data});
           })
           .catch(() => res.render('error', { errorMsg: 'The blockchain seems to be not available' }))
@@ -45,9 +48,10 @@ module.exports.controller = function(app) {
     app.get('/:id/detail', function(req, res) {
         var address = req.params.id;
         blockstarter.getProjectStatusForAddress(address).then(function(data){
+            data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
+            data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
             res.render('detail',{data:data});
         });
-
     });
 
     app.post('/:id/invest', function(req, res) {
@@ -59,4 +63,23 @@ module.exports.controller = function(app) {
             res.redirect('/'+address+"/detail");
         }).catch(console.log);
     });
+
+    app.post('/:id/startPoll', function(req, res) {
+        var address = req.params.id;
+        var poll = req.body.poll;
+        var owner = req.session.address;
+        blockstarter.startPoll(address,owner,poll).then(() => {
+            res.redirect('/myprojects/'+address+"/view");
+        }).catch(console.log);
+    });
+
+    app.get('/:id/poll/yes', function(req, res) {
+        var address = req.params.id;
+        blockstarter.votePoll(address, req.session.address, true).then(() => res.redirect('/myinvests/'+address+"/investorsview"))
+    })
+
+    app.get('/:id/poll/no', function(req, res) {
+        var address = req.params.id;
+        blockstarter.votePoll(address, req.session.address, false).then(() => res.redirect('/myinvests/'+address+"/investorsview"))
+    })
 }

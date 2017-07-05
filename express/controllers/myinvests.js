@@ -32,6 +32,8 @@ module.exports.controller = function(app) {
     app.get('/myinvests/:id/investorsview', function(req, res) {
         var address = req.params.id;
         blockstarter.getProjectStatusForAddress(address).then(function(data){
+            data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
+            data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
             res.render('investorsviews',{data:data});
         });
     });

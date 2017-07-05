@@ -90,7 +90,7 @@ function createBlockstarter(data) {
     const contract = data.web3.eth.contract(data.blockstarter.abi).new({
       from: data.blockstarter.creator,
       data: data.blockstarter.bytecode,
-      gas: 2100000
+      gas: 3900000
     }, (err, contract) => {
       if (err) {
         console.error('could not create blockstarter contract')

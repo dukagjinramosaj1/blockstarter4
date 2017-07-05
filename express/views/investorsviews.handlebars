@@ -17,9 +17,7 @@
                     {{else}}
                         <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
                     {{/if}}
-                    <li class="list-group-item">
-                        <a class="btn btn-primary btn-block" href="/myprojects/{{data.address}}/token" role="button">Get Token</a>
-                    </li>
+                    <li class="list-group-item">Token:&nbsp;{{token}}</li>
                 </ul>
             </div>
         </div>
@@ -27,6 +25,16 @@
             <h4  class="display-4">{{data.title}}</h4>
             <br/>
             <p class="lead">{{data.description}}</p>
+			{{#if data.poll}}
+				<br/>
+				<p class="lead"><strong>Poll: </strong>{{data.poll}}</p>
+				<div class="bar">
+					<div class="yes" style="width: {{data.pollyesperc}}%"></div>
+					<div class="no" style="width: {{data.pollnoperc}}%"></div>
+				</div>
+				<br/>
+				<a class="btn btn-primary btn-block" href="/{{data.address}}/poll/yes" role="button">Yes</a> <a class="btn btn-danger btn-block" href="/{{data.address}}/poll/no" role="button">No</a>
+			{{/if}}
         </div>
     </div>
 </div>
