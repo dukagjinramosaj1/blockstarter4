@@ -73,10 +73,23 @@ function getAllStatus() {
 }
 
 function getAllFundedStatus(funder) {
+  console.log('getAllFundedStatus', funder)
   return getAllProjectsForFunder(funder)
     .then(addresses => {
-      const map = addresses.map(a => getProjectStatusForAddress(a))
+      const map = addresses.map(a => {
+        const commonStatusPromise = getProjectStatusForAddress(a)
+        const tokenPromise = getTokenForProjectForUser(a, funder)
+        return Promise.all([commonStatusPromise, tokenPromise])
+      })
       return Promise.all(map)
+        .then(statusTokenPairs => {
+          return statusTokenPairs.map(pair => {
+            const status = pair[0]
+            const token = pair[1]
+            status.token = token
+            return status
+          })
+        })
     })
 }
 
@@ -116,27 +129,8 @@ function createProject(creator, title, description, fundingGoal) {
   })
 }
 
-function getTokenForProject(projectAddress, funder) {
-  return new Promise((resolve, reject) => {
-    const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.getToken(funder, ((err, tokenAddress) => {
-      if (err) {
-        reject(err)
-      } else {
-        config.abi.token.at(tokenAddress).value((err, tokenValue) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(tokenValue)
-          }
-        })
-      }
-    }))
-  })
-}
-
-
 function isFunderInProject(funder, projectAddress) {
+  console.log('is funder', funder, projectAddress)
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
     project.is_funder(funder, (err, result) => {
@@ -232,6 +226,19 @@ function transferToken(projectAddress, sender, receiver, amount) {
   })
 }
 
+function getTokenForProjectForUser(projectAddress, user) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.get_token({from: user, gas: 210000}, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result.c[0])
+      }
+    })
+  })
+}
+
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
@@ -245,20 +252,6 @@ module.exports = {
   cancelAndRefundProject,
   startPoll,
   transferToken,
-  votePoll
+  votePoll,
+  getTokenForProjectForUser
 }
-
-// just for testing, has to removed afterwards
-// createProject(config.accounts[4], 'TestProject', 'This is just a test', 359324)
-
-// getProjectAddressAtIndex(0)
-//   .then(proj => investInProject(proj, config.accounts[0], 400))
-
-// getProjectAddressAtIndex(0)
-// .then(p => endFunding(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4'))
-
-// getProjectAddressAtIndex(0)
-//   .then(p => withdraw(p, '0x0dc840a6e0f780348647c79a4c0ac8aadf3efdd4', 199))
-
-// getAllStatus().then(console.log).catch(console.error)
-// cancelAndRefundProject('0x13d12a8668eff2d95bc231978cad1f16ba1b7fd1', '0x4c5cda45cbd0b5abbae84c4d77bfa5a246aa9150').catch(console.error)

@@ -7,10 +7,11 @@ module.exports.controller = function(app) {
     // My Investments Page: Fetch all Projects in which the User has invested.
     app.get('/myinvests', function(req, res) {
         blockstarter.getAllFundedStatus(req.session.address)
-        //blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
+              console.log(data)
                 res.render('investors',{data:data});
             }).catch((error) => {
+              console.error(error)
             res.render('investors',{data:""});
         });
     });
@@ -31,7 +32,13 @@ module.exports.controller = function(app) {
     // Detail Page of Project(referenced from MyInvestments Page)
     app.get('/myinvests/:id/investorsview', function(req, res) {
         var address = req.params.id;
-        blockstarter.getProjectStatusForAddress(address).then(function(data){
+        var user = req.session.address
+        Promise.all([
+          blockstarter.getProjectStatusForAddress(address),
+          blockstarter.getTokenForProjectForUser(address, user),
+        ]).then(function(result){
+            let data = result[0]
+            data.token = result[1]
             data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
             data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
             res.render('investorsviews',{data:data});
