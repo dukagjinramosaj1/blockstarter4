@@ -88,7 +88,7 @@ contract Project {
     function tradeShares(
     address _from,
     address _to
-    ) returns (bool success) {
+    ) payable returns (bool success) {
         if (investments[_from] >= msg.value
         && msg.value > 0
         && investments[_to] + msg.value > investments[_to]) {

@@ -102,10 +102,10 @@ function investInProject(projectAddress, backer, amount) {
 }
 
 
-function tradeProjectShares(projectAddress,_from, _to, amount) {
+function tradeProjectShares(projectAddress,_from, _to) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.tradeShares(_from,_to,amount).sendTransaction(
+    project.tradeShares(_from,_to).sendTransaction(
       {value:amount, gas:2100000, from: _from},
       (err, result) => {
         if (err) {
