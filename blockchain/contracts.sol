@@ -56,6 +56,7 @@ contract Project {
     //EVENTS
     // Triggered when tokens are transferred.
     event Transfer(address indexed _from, address indexed _to, uint256 _value, uint256 _remainingSupply);
+    event TransferAllowed(address indexed _from, address indexed _to, uint256 _value );
 
     mapping (address => uint) investments;
     address[] investors;
@@ -84,15 +85,19 @@ contract Project {
         investments[msg.sender] += msg.value;
         investors.push(msg.sender);
     }
+
+
     // msg.sender(_investor) buys shares from a project _backer by sending ether to a project contract
     // backer receives ether for it which will be removed from the project contract
     function tradeShares( address _backer) payable returns (bool success) {
         address _investor = msg.sender;
         if (investments[_backer] >= msg.value
         && msg.value > 0
+        && allowed[_backer][msg.sender] >= _amount
         && investments[_investor] + msg.value > investments[_investor]) {
             investments[_backer] -= msg.value;
             investments[_investor] += msg.value;
+            allowed[_backer][msg.sender] -= _amount;
             //sending eth from contract to _backer
             _backer.send(msg.value);
             Transfer(_backer, _investor, msg.value, investments[_backer]);
@@ -100,6 +105,12 @@ contract Project {
         } else {
             return false;
         }
+    }
+
+    function approveTrade(address _investor, uint256 _amount) returns (bool success) {
+        allowed[msg.sender][_investor] = _amount;
+        Approval(msg.sender, _investor, _amount);
+        return true;
     }
 
     function start_poll(string _poll) {
