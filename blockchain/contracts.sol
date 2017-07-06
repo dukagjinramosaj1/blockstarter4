@@ -84,17 +84,18 @@ contract Project {
         investments[msg.sender] += msg.value;
         investors.push(msg.sender);
     }
-
-    function tradeShares(
-    address _from,
-    address _to
-    ) payable returns (bool success) {
-        if (investments[_from] >= msg.value
+    // msg.sender(_investor) buys shares from a project _backer by sending ether to a project contract
+    // backer receives ether for it which will be removed from the project contract
+    function tradeShares( address _backer) payable returns (bool success) {
+        address _investor = msg.sender;
+        if (investments[_backer] >= msg.value
         && msg.value > 0
-        && investments[_to] + msg.value > investments[_to]) {
-            investments[_from] -= msg.value;
-            investments[_to] += msg.value;
-            Transfer(_from, _to, msg.value, investments[_from]);
+        && investments[_investor] + msg.value > investments[_investor]) {
+            investments[_backer] -= msg.value;
+            investments[_investor] += msg.value;
+            //sending eth from contract to _backer
+            _backer.send(msg.value);
+            Transfer(_backer, _investor, msg.value, investments[_backer]);
             return true;
         } else {
             return false;
