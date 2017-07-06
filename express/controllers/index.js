@@ -3,23 +3,29 @@
  */
 
 var blockstarter = require('../../blockchain/blockchain-connect');
+const colorize = require('../colorhelper')
+
 module.exports.controller = function(app) {
 
     /*  home page route
         fetch all projects to display on homescreen */
     app.get('/', (req,res) => {
-        const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus()]
+        const promises = [blockstarter.getProjectCount(), blockstarter.getAllStatus().then(colorize)]
         Promise.all(promises)
           .then(result => {
             const project_count = result[0]
             let data = result[1]
+            console.log(data)
 
             // only display funding projects
             data = data.filter(project => project.stage === 'Funding')
 
             res.render('home', {project_count, data});
           })
-          .catch(() => res.render('error', { errorMsg: 'The blockchain seems to be not available' }))
+          .catch((err) => {
+            res.render('error', { errorMsg: 'The blockchain seems to be not available' })
+            console.log(err)
+          })
     });
 
     // About Login route
@@ -49,7 +55,7 @@ module.exports.controller = function(app) {
     // Detail Page of Project(referenced from Home Page)
     app.get('/:id/detail', function(req, res) {
         var address = req.params.id;
-        blockstarter.getProjectStatusForAddress(address).then(function(data){
+        blockstarter.getProjectStatusForAddress(address).then(colorize).then(function(data){
             data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
             data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
             res.render('detail',{data:data});
