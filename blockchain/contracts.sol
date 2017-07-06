@@ -87,15 +87,14 @@ contract Project {
 
     function tradeShares(
     address _from,
-    address _to,
-    uint256 _amount
+    address _to
     ) returns (bool success) {
-        if (investments[_from] >= _amount
-        && _amount > 0
-        && investments[_to] + _amount > investments[_to]) {
-            investments[_from] -= _amount;
-            investments[_to] += _amount;
-            Transfer(_from, _to, _amount, investments[_from]);
+        if (investments[_from] >= msg.value
+        && msg.value > 0
+        && investments[_to] + msg.value > investments[_to]) {
+            investments[_from] -= msg.value;
+            investments[_to] += msg.value;
+            Transfer(_from, _to, msg.value, investments[_from]);
             return true;
         } else {
             return false;
