@@ -102,11 +102,11 @@ function investInProject(projectAddress, backer, amount) {
 }
 
 
-function tradeProjectShares(projectAddress,_from, _to) {
+function tradeProjectShares(projectAddress,_from, _to,_amount) {
   return new Promise((resolve, reject) => {
     const project = web3.eth.contract(config.abi.project).at(projectAddress)
-    project.tradeShares(_from,_to).sendTransaction(
-      {value:amount, gas:2100000, from: _from},
+    project.tradeShares(_from).sendTransaction(
+      {value:_amount, gas:2100000, from: _to},
       (err, result) => {
         if (err) {
           reject(err)
@@ -115,6 +115,21 @@ function tradeProjectShares(projectAddress,_from, _to) {
         }
       })
   })
+}
+
+function approveTrade(projectAddress,_from, _to,_amount) {
+    return new Promise((resolve, reject) => {
+        const project = web3.eth.contract(config.abi.project).at(projectAddress)
+        project.approveTrade(_to,_amount).sendTransaction(
+            {value:_amount, gas:2100000, from: _from},
+            (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(result)
+                }
+            })
+    })
 }
 
 

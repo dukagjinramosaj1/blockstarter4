@@ -89,7 +89,7 @@ contract Project {
 
     // msg.sender(_investor) buys shares from a project _backer by sending ether to a project contract
     // backer receives ether for it which will be removed from the project contract
-    function tradeShares( address _backer) payable returns (bool success) {
+    function tradeShares(address _backer) payable returns (bool success) {
         address _investor = msg.sender;
         if (investments[_backer] >= msg.value
         && msg.value > 0
