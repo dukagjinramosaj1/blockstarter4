@@ -101,6 +101,24 @@ function investInProject(projectAddress, backer, amount) {
   })
 }
 
+
+function tradeProjectShares(projectAddress,_from, _to, amount) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.tradeShares(_from,_to,amount).sendTransaction(
+      {value:amount, gas:2100000, from: _from},
+      (err, result) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+  })
+}
+
+
+
 function createProject(creator, title, description, fundingGoal) {
   return new Promise((resolve, reject) => {
     blockstarter.create_project(title, description, fundingGoal, {
