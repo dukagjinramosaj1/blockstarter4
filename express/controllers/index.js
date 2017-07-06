@@ -20,10 +20,10 @@ module.exports.controller = function(app) {
             // only display funding projects
             data = data.filter(project => project.stage === 'Funding')
 
-            res.render('home', {project_count, data});
+            res.render('home', {project_count, data, useraddr: req.session.coloredAddress});
           })
           .catch((err) => {
-            res.render('error', { errorMsg: 'The blockchain seems to be not available' })
+            res.render('error', { errorMsg: 'The blockchain seems to be not available' , useraddr: req.session.coloredAddress})
             console.log(err)
           })
     });
@@ -56,10 +56,11 @@ module.exports.controller = function(app) {
     app.get('/:id/detail', function(req, res) {
         var address = req.params.id;
         blockstarter.getProjectStatusForAddress(address).then(colorize).then(function(data){
+          console.log(data)
             data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
             data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
-            res.render('detail',{data:data});
-        });
+            res.render('detail',{data:data, useraddr: req.session.coloredAddress});
+        }).catch(console.error);
     });
 
     app.post('/:id/invest', function(req, res) {

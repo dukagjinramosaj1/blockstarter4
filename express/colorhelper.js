@@ -3,8 +3,9 @@ function colorize(data) {
     data.coloredAddress = getColors(data.address)
   }
   if (data.owner) {
-    data.coloredOwner = getColors(owner)
+    data.coloredOwner = getColors(data.owner)
   }
+  if (!data.forEach) return data
   data.forEach(el => {
     if (el.address) {
       el.coloredAddress = getColors(el.address)

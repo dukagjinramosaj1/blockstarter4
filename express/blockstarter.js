@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var session = require('express-session');
+var colorize = require('./colorhelper')
 
 app.disable('x-powered-by');
 
@@ -32,6 +33,7 @@ app.use(function(req, res, next){
     if (success) res.locals.success = success;
 
     if(req.session.address != undefined){
+        colorize(req.session)
         res.locals.success = true;
         res.locals.error = ""
     }else{

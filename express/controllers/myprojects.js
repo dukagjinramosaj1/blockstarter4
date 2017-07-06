@@ -9,7 +9,7 @@ module.exports.controller = function(app) {
         blockstarter.getAllOwnedStatus(req.session.address)
         // blockstarter.getAllStatus(req.session.address)
             .then(function (data) {
-                res.render('listProjects',{data:data});
+                res.render('listProjects',{data:data, useraddr: req.session.coloredAddress});
             }).catch((error) => {
             res.render('listProjects',{data:""});
         });
@@ -23,13 +23,13 @@ module.exports.controller = function(app) {
             data.runningAndSuccessful = data.fundingGoalReached && data.running;
             data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
             data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
-            res.render('view',{data:data});
+            res.render('view',{data:data, useraddr: req.session.coloredAddress});
         });
     });
 
     // Route for Creation of Project.
     app.get('/myprojects/createProject', function(req, res) {
-        res.render('createProject');
+        res.render('createProject',{useraddr: req.session.coloredAddress});
     });
 
     // Post Route of Project Creation.

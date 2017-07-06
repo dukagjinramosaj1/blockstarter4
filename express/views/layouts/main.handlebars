@@ -33,6 +33,17 @@
             </ul>
             <ul class="navbar-nav navbar-right">
                 {{#if success}}
+					<li class="nav-item">
+					<div class="id-tile">
+					  <div style="width: 30px; background-color: {{useraddr.x0}}"></div>
+					  <div style="background-color: {{useraddr.x1}}; left: 10px"></div>
+					  <div style="width: 30px; background-color: {{useraddr.x2}}; top: 10px"></div>
+					  <div style="background-color: {{useraddr.x3}}; left: 10px; top: 10px"></div>
+					  <div style="width: 30px; background-color: {{useraddr.x4}}; top: 20px"></div>
+					  <div style="background-color: {{useraddr.x5}}; left: 10px; top: 20px"></div>
+					  <div style="background-color: {{useraddr.x6}}; left: 20px; top: 20px"></div>
+					</div>
+					</li>
                     <li class="nav-item"><a class="nav-link" href="/logout"><span class="fa fa-user-circle-o" style="color:#3366ff"></span> Logout </a></li>
                 {{else}}
                     <li class="nav-item"><a class="nav-link" href="/login"><span class="fa fa-user-circle-o" style="color:#3366ff"></span> Login </a></li>

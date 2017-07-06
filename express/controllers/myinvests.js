@@ -9,7 +9,7 @@ module.exports.controller = function(app) {
         blockstarter.getAllFundedStatus(req.session.address)
             .then(function (data) {
               console.log(data)
-                res.render('investors',{data:data});
+                res.render('investors',{data:data, useraddr: req.session.coloredAddress});
             }).catch((error) => {
               console.error(error)
             res.render('investors',{data:""});
@@ -41,13 +41,13 @@ module.exports.controller = function(app) {
             data.token = result[1]
             data.pollyesperc = data.currentFunding ? data.proPoll / data.currentFunding * 100 : 0
             data.pollnoperc = data.currentFunding ? data.contraPoll / data.currentFunding * 100 : 0
-            res.render('investorsviews',{data:data});
+            res.render('investorsviews',{data:data, useraddr: req.session.coloredAddress});
         });
     });
 
     app.get('/myinvests/:id/transfertokens', function(req, res){
         var projectAddress = req.params.id
-        res.render('transfertokens', {projectAddress})
+        res.render('transfertokens', {projectAddress, useraddr: req.session.coloredAddress})
     });
 
     app.post('/myinvests/:id/transfertoken', function(req, res){
