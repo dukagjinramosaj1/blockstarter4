@@ -28,6 +28,25 @@ module.exports.controller = function(app) {
         res.render('login')
     });
 
+    app.get('/transfertokens', function(req, res){
+        console.log(req.body);
+        res.render("transfertokens");
+    });
+
+
+
+
+    app.post('/submit', function(req, res){
+        if(req.body.address != "") {
+            req.session.address = req.body.address;
+            req.session.amount = req.body.amount;
+            res.redirect('/myinvests');
+        }else{
+            res.redirect('/transfertokens');
+        }
+    });
+
+
     // Login Post route
     app.post('/submit', function(req, res){
         if(req.body.address != "") {
