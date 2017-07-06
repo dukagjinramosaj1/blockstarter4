@@ -2,7 +2,6 @@
     <a class="breadcrumb-item" href="/">Home</a>
     <a class="breadcrumb-item" href="/myinvests">My Investments</a>
     <span class="breadcrumb-item active">{{data.title}}</span>
-    <a class="breadcrumb-item" href="/transfertokens">Transfer Tokens</a>
 </nav>
 
 <div class="container">
@@ -19,6 +18,8 @@
                         <li class="list-group-item">Funding &nbsp; <span class="badge badge-success">PENDING</span></li>
                     {{/if}}
                     <li class="list-group-item">Token:&nbsp;{{token}}</li>
+                    <li class="list-group-item"> <a class="btn btn-primary btn-block" href="/myinvests/{{data.address}}/transfertokens" role="button">Transfer Token</a> </li>
+                        
                 </ul>
             </div>
         </div>

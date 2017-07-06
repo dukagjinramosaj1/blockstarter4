@@ -219,6 +219,19 @@ function votePoll(projectAddress, voter, vote) {
   })
 }
 
+function transferToken(projectAddress, sender, receiver, amount) {
+  return new Promise((resolve, reject) => {
+    const project = web3.eth.contract(config.abi.project).at(projectAddress)
+    project.transfer_token(receiver, amount, {from: sender, gas: 210000}, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
 // export all the methods that should be provided to express
 module.exports = {
   getProjectCount,
@@ -231,6 +244,7 @@ module.exports = {
   endFunding,
   cancelAndRefundProject,
   startPoll,
+  transferToken,
   votePoll
 }
 

@@ -37,4 +37,21 @@ module.exports.controller = function(app) {
             res.render('investorsviews',{data:data});
         });
     });
+
+    app.get('/myinvests/:id/transfertokens', function(req, res){
+        var projectAddress = req.params.id
+        res.render('transfertokens', {projectAddress})
+    });
+
+    app.post('/myinvests/:id/transfertoken', function(req, res){
+        const sender = req.session.address
+        const receiver = req.body.address
+        const amount = req.body.amount
+        const projectAddress = req.params.id
+        console.log(sender, receiver, amount)
+        // TODO connect blockchain
+        blockstarter.transferToken(req.params.id, sender, receiver, amount)
+          .then(() => res.redirect(`/myinvests`))
+          .catch(() => res.redirect('/'))
+    });
 }
