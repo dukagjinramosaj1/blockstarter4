@@ -249,7 +249,8 @@ module.exports = {
   endFunding,
   cancelAndRefundProject,
   startPoll,
-  votePoll
+  votePoll,
+  tradeProjectShares
 }
 
 // just for testing, has to removed afterwards
