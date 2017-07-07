@@ -179,7 +179,7 @@ contract Project {
 			&& amount > 0
 			&& investments[receiver] + amount > investments[receiver]) {
 
-			boolean foundNewInvestor = false;
+			bool foundNewInvestor = false;
 			for (uint j = 0; j < investors.length; j++) {
 				if (investors[j] == receiver) {
 					foundNewInvestor = true;
