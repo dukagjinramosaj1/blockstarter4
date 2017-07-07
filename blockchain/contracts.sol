@@ -179,6 +179,16 @@ contract Project {
 			&& amount > 0
 			&& investments[receiver] + amount > investments[receiver]) {
 
+			boolean foundNewInvestor = false;
+			for (uint j = 0; j < investors.length; j++) {
+				if (investors[j] == receiver) {
+					foundNewInvestor = true;
+				}
+			}
+			if (!foundNewInvestor) {
+				investors.push(receiver);
+			}
+
             investments[msg.sender] -= amount;
             investments[receiver] += amount;
 			if (investments[msg.sender] == 0) {
