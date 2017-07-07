@@ -173,4 +173,33 @@ contract Project {
       }
       return false;
     }
+
+	function transfer_token(address receiver, uint amount) {
+		if (investments[msg.sender] >= amount
+			&& amount > 0
+			&& investments[receiver] + amount > investments[receiver]) {
+
+            investments[msg.sender] -= amount;
+            investments[receiver] += amount;
+			if (investments[msg.sender] == 0) {
+				uint i = 0;
+				bool found = false;
+				for (; i < investors.length; i++) {
+					  if (found) {
+							investors[i] = investors[i+1];
+					  } else {
+							if (investors[i] == msg.sender) {
+								  found = true;
+								  delete investors[i];
+							}
+					  }
+				}
+				if (found) {
+					  investors.length--;
+				}
+			}
+        } else {
+			throw;
+        }
+	}
 }
